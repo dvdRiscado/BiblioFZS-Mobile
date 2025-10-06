@@ -1,12 +1,16 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function Home() {
+  function goLogin(){
+    console.log('foi pro login')
+    router.navigate('/login')
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Hello World</Text>
-
-      <StatusBar style="auto" />
+      <Text style={styles.text}>Hello, :D</Text>
+      <Button onPress={goLogin} title="Ir para Login"></Button>
     </View>
   );
 }
@@ -18,4 +22,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  text: {
+    fontSize:32,
+    fontWeight: "bold",
+
+  }
 });
