@@ -27,7 +27,7 @@ export default function Login() {
         ></InputText>
         <Text>Esqueceu a senha?</Text>
       </View>
-      <Button text="Entrar >"></Button>
+      <Button text="Entrar >" />
     </View>
   );
 }
