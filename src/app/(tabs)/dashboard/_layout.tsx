@@ -7,7 +7,21 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function Layout() {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#A60000",
+        tabBarInactiveTintColor: "#e9e9e9",
+        tabBarStyle: {
+          position: "absolute",
+          bottom: -1,
+          backgroundColor: "#1E1E1E",
+          height: 120,
+          paddingTop: 12,
+          width: "101%",
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
