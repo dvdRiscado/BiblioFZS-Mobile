@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     height: 36,
     justifyContent:"center",
     alignItems:"center",
-    color:"#fff",
     fontWeight:"bold",
     paddingVertical:8,
     paddingHorizontal:16,
@@ -20,10 +19,13 @@ export const styles = StyleSheet.create({
     height: 36,
     justifyContent:"center",
     alignItems:"center",
-    
     fontWeight:"bold",
     paddingVertical:8,
     paddingHorizontal:16,
     fontSize:14
   },
+  textoBotaoAtivado:{
+    color: "#FFF",
+    fontWeight:"700"
+  }
 })

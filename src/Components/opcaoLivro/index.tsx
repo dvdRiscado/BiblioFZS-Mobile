@@ -11,7 +11,7 @@ type props={
 export function OpcaoLivro({ children, valOn, valor, onPress}: props){
     return(
         <TouchableOpacity style={valOn == valor ? styles.botaoAtivado : styles.botaoDesativado} onPress={onPress}>
-            <Text>
+            <Text style={valOn == valor ? styles.textoBotaoAtivado : null}>
                 {children}
             </Text>
         </TouchableOpacity>

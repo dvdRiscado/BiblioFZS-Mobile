@@ -16,7 +16,7 @@ export default function Catalog() {
   }
 
   function goDetalhesLivro (){
-    router.push('/')
+    router.navigate('/detalheslivro')
   } 
   
 
@@ -39,13 +39,13 @@ export default function Catalog() {
           </View>
         </View>
         <View style={styles.opcaoLivroContainer}>
-          <TouchableOpacity activeOpacity={0.4} style={styles.opcaoLivroOff}>
+          <TouchableOpacity activeOpacity={0.4} style={styles.opcaoLivroOff} onPress={goDetalhesLivro}>
             <Ionicons name="add-circle-outline" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.4} style={styles.opcaoLivroOn}>
             <MaterialCommunityIcons name="arrow-right-top" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.4} style={styles.opcaoLivroOff}>
+          <TouchableOpacity activeOpacity={0.4} style={styles.opcaoLivroOff} >
             <Feather name="bookmark" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent: "space-around",
     alignItems: "center",
-    padding:26
+    padding:26,
+    
   },
   livroBackgroundContainer:{
     justifyContent:"center",
