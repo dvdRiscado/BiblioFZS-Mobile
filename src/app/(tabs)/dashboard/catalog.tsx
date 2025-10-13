@@ -16,7 +16,7 @@ export default function Catalog() {
   }
 
   function goDetalhesLivro (){
-    router.push('/detalhesLivro')
+    router.push('/')
   } 
   
 
