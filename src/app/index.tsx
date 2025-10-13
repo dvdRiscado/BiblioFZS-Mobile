@@ -2,6 +2,11 @@ import { router } from "expo-router";
 import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function Home() {
+  function goRegister() {
+    console.log("foi pro cadastro");
+    router.push("/register");
+  }
+
   function goLogin() {
     console.log("foi pro login");
     router.push("/login");
@@ -15,6 +20,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Hello, :D</Text>
+      <Button onPress={goRegister} title="ir para Cadastro"></Button>
       <Button onPress={goLogin} title="Ir para Login"></Button>
       <Button onPress={goDashboard} title="Ir para Dashboard"></Button>
     </View>
