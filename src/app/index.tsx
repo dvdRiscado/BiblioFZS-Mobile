@@ -3,12 +3,10 @@ import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function Home() {
   function goLogin() {
-    console.log("foi pro login");
     router.push("/login");
   }
 
   function goDashboard() {
-    console.log("foi pro dashboard");
     router.push("/dashboard");
   }
 

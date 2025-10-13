@@ -3,6 +3,8 @@ import Feather from '@expo/vector-icons/Feather';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { router } from "expo-router";
+
 import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -12,6 +14,11 @@ export default function Catalog() {
   function liga(val: string){
     setOpcaoLivro(val)
   }
+
+  function goDetalhesLivro (){
+    router.push('/detalhesLivro')
+  } 
+  
 
   return (
     <View style={styles.container}>
