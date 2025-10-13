@@ -19,6 +19,7 @@ export default function Layout() {
         options={{ title: "Login", headerShadowVisible: false }}
       />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="detalheslivro" options={{ headerShown: false }} />
     </Stack>
   );
 }
