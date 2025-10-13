@@ -4,11 +4,15 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Catalog() {
-  const [opcaoLivro, setOpcaoLivro] = useState('')
+  const [opcaoLivro, setOpcaoLivro] = useState('livro')
   
+  function liga(val: string){
+    setOpcaoLivro(val)
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
@@ -17,13 +21,14 @@ export default function Catalog() {
           <FontAwesome name="search" size={28} color="white" />
         </View>
         <View style={styles.containerOpcao}>
-          <OpcaoLivro>Livros</OpcaoLivro>
-          <OpcaoLivro>Dvd's</OpcaoLivro>
-          <OpcaoLivro>Monografias</OpcaoLivro>
+          <OpcaoLivro onPress={()=>liga('livro')} valOn={opcaoLivro} valor={'livro'}>Livros</OpcaoLivro>
+          <OpcaoLivro onPress={()=>liga('dvds')} valOn={opcaoLivro} valor={'dvds'}>Dvd's</OpcaoLivro>
+          <OpcaoLivro onPress={()=>liga('monografias')} valOn={opcaoLivro} valor={'monografias'}>Monografias</OpcaoLivro>
+          
         </View>
-        <View style={styles.livroContainer}>
+        <View style={styles.livroBackgroundContainer}>
           <View style={styles.livroBackground}>
-
+            <Image source={require('@/assets/images/img/livro1.png')} style={{width:"90%", height: "90%", borderRadius: 24}}></Image>
           </View>
         </View>
         <View style={styles.opcaoLivroContainer}>
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding:26
   },
-  livroContainer:{
+  livroBackgroundContainer:{
     justifyContent:"center",
     alignItems: "center"
   },
@@ -92,7 +97,10 @@ const styles = StyleSheet.create({
     borderRadius:32,
     width: 332,
     height: 538,
+    alignItems: "center",
+    justifyContent: "center",
   },
+
   opcaoLivroContainer:{
     flexDirection:"row",
     gap: 36,
