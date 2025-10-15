@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     paddingLeft: "6%",
     paddingRight: 60,
     justifyContent: "space-between",
+    marginBottom: 10,
   },
   input: {
     backgroundColor: "rgba(0,0,0,0)",
