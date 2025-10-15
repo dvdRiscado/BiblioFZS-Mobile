@@ -1,18 +1,73 @@
+import { useCallback, useRef, useState } from "react";
 import {
+  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import Animated, { Extrapolate, interpolate } from "react-native-reanimated";
+import Carousel from "react-native-reanimated-carousel";
 
 // Componentes
+import CardBookLarge from "@/src/Components/cardBookLarge";
+import CardBookSmall from "@/src/Components/cardBookSmall";
 import InputSearch from "@/src/Components/inputSearch";
 
 // Icones
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+const bookData = [
+  {
+    id: "1",
+    title: "Entendendo Algoritmos",
+    author: "Aditya Y. Bhargava",
+    rating: 4.5,
+    uri: require("@/assets/images/image.png"),
+  },
+  {
+    id: "2",
+    title: "Não Entendendo Algoritmos",
+    author: "Aditya Y. Bhargava",
+    rating: 4.0,
+    uri: require("@/assets/images/image.png"),
+  },
+  {
+    id: "3",
+    title: "Desisto de Algoritmos",
+    author: "Aditya Y. Bhargava",
+    rating: 3.5,
+    uri: require("@/assets/images/image.png"),
+  },
+];
+
 export default function Home() {
+  const width = Dimensions.get("window").width;
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef(null);
+
+  const animationStyle = useCallback((value) => {
+    "worklet";
+    const scale = interpolate(
+      value,
+      [-1, 0, 1],
+      [0.8, 1, 0.8], // Escala: itens laterais 80%, item central 100%
+      Extrapolate.CLAMP
+    );
+    const opacity = interpolate(
+      value,
+      [-1, 0, 1],
+      [0.6, 1, 0.6], // Opacidade: itens laterais 60%, item central 100%
+      Extrapolate.CLAMP
+    );
+    return {
+      transform: [{ scale }],
+      opacity,
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -25,9 +80,62 @@ export default function Home() {
             <Ionicons name="notifications-outline" size={24} color="#B9030F" />
           </TouchableOpacity>
         </View>
-
         <Text style={styles.headline}>Bem-Vindo, David!</Text>
         <InputSearch />
+        <View style={styles.carrossel}>
+          <Text style={styles.titleWhite}>Livros para você!</Text>
+          <Text style={styles.titleBook}>
+            {bookData[activeIndex]?.title || "N/A"}
+          </Text>
+          <Text style={styles.textWhite}>
+            {bookData[activeIndex]?.author || "N/A"}
+          </Text>
+          <Carousel
+            loop
+            width={width}
+            height={width - 55}
+            data={bookData}
+            autoPlay={true}
+            autoPlayInterval={5000}
+            scrollAnimationDuration={500}
+            mode="parallax"
+            modeConfig={{
+              parallaxScrollingScale: 0.9,
+              parallaxScrollingOffset: 190,
+            }}
+            onSnapToItem={(index) => setActiveIndex(index)}
+            pagingEnabled={true}
+            snapEnabled={true}
+            renderItem={({ item, index }) => {
+              // Passamos a função animationStyle para o Animated.View
+              const animatedStyle = animationStyle(
+                carouselRef.current?.getCurrentProgress?.() - index || 0
+              );
+              return (
+                <Animated.View style={animatedStyle}>
+                  <CardBookLarge book={item} />
+                </Animated.View>
+              );
+            }}
+          />
+        </View>
+        <Text style={[styles.title, { marginBottom: "2%" }]}>
+          Outras Sugestões!
+        </Text>
+        <View style={styles.suggestion}>
+          <View style={styles.row}>
+            <CardBookSmall book={bookData[0]} />
+            <CardBookSmall book={bookData[1]} />
+          </View>
+          <View style={styles.row}>
+            <CardBookSmall book={bookData[2]} />
+            <CardBookSmall book={bookData[0]} />
+          </View>
+          <View style={styles.row}>
+            <CardBookSmall book={bookData[1]} />
+            <CardBookSmall book={bookData[2]} />
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -37,14 +145,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
   },
 
   scrollContainer: {
     paddingHorizontal: 24,
     marginTop: 48,
     width: "100%",
-    height: "100%",
+    marginBottom: 110,
   },
 
   header: {
@@ -56,16 +163,70 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "semibold",
+    textAlign: "center",
+  },
+
+  titleWhite: {
+    fontSize: 20,
+    color: "#dadada",
+    fontWeight: "semibold",
+    textAlign: "center",
   },
 
   headline: {
     marginTop: "12%",
-    marginBottom: "6%",
+    marginBottom: "4%",
     fontSize: 24,
     fontWeight: "bold",
-    width: "100%",
+    textAlign: "center",
+  },
+
+  titleBook: {
+    marginTop: "4%",
+    marginBottom: "1%",
+    fontSize: 24,
+    color: "#B9030F",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+
+  text: {
+    marginBottom: "8%",
+    fontSize: 18,
+    fontWeight: "regular",
+    width: 300,
+    textAlign: "center",
+  },
+
+  textWhite: {
+    marginBottom: "4%",
+    fontSize: 18,
+    fontWeight: "regular",
+    color: "white",
+    width: 300,
     textAlign: "center",
   },
 
   btnNotification: {},
+
+  carrossel: {
+    paddingTop: 30,
+    marginTop: "2%",
+    marginBottom: "4%",
+    flex: 1,
+    alignItems: "center",
+    borderRadius: 30,
+    backgroundColor: "#161917",
+  },
+
+  suggestion: {
+    paddingVertical: 5,
+    marginBottom: 20,
+    gap: 6,
+  },
+
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });

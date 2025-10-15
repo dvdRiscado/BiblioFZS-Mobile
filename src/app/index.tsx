@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { Button, StyleSheet, Text, View } from "react-native";
+import "react-native-gesture-handler";
 
 export default function Home() {
   function goRegister() {
