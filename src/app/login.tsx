@@ -42,7 +42,6 @@ export const styles = StyleSheet.create({
   titulo: {
     fontSize: 48,
     color: "#B9030F",
-    // fontFamily: "montserrat",
     fontWeight: "bold",
   },
   subtitulo: {
