@@ -1,22 +1,15 @@
 import { useCallback, useRef, useState } from "react";
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { Extrapolate, interpolate } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 
 // Componentes
 import CardBookLarge from "@/src/Components/cardBookLarge";
 import CardBookSmall from "@/src/Components/cardBookSmall";
+import Header from "@/src/Components/header";
 import InputSearch from "@/src/Components/inputSearch";
 
 // Icones
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 const bookData = [
   {
@@ -74,12 +67,7 @@ export default function Home() {
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
-          <Text style={styles.title}>BIBLIOFZS</Text>
-          <TouchableOpacity style={styles.btnNotification}>
-            <Ionicons name="notifications-outline" size={24} color="#B9030F" />
-          </TouchableOpacity>
-        </View>
+        <Header />
         <Text style={styles.headline}>Bem-Vindo, David!</Text>
         <InputSearch />
         <View style={styles.carrossel}>
@@ -174,7 +162,7 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    marginTop: "12%",
+    marginTop: "8%",
     marginBottom: "4%",
     fontSize: 24,
     fontWeight: "bold",
