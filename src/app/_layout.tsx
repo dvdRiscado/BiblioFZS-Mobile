@@ -8,6 +8,9 @@ export default function Layout() {
       <Stack.Screen name="login" options={{ title: "Login", headerShadowVisible: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="detalheslivro" options={{ headerShown: false }} />
+      <Stack.Screen name="qrcode" options={{ headerShown: false }} />
+      <Stack.Screen name="camqrcode" options={{ headerShown: false }} />
+      <Stack.Screen name="historicoqrcode" options={{ headerShown: false }} />
     </Stack>
   );
 }
