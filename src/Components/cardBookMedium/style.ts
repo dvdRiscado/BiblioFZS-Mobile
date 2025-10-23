@@ -12,11 +12,14 @@ export const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "40%",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "auto",
   },
   image: {
     width: "95%",
+    height: "100%",
     aspectRatio: undefined,
-    marginTop: -50,
   },
   infoContainer: {
     width: "60%",
