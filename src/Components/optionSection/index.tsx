@@ -9,7 +9,13 @@ type props = {
   qtd: number;
 };
 
-export function OptionSection({ children, valOn, valor, qtd, onPress }: props) {
+export default function OptionSection({
+  children,
+  valOn,
+  valor,
+  qtd,
+  onPress,
+}: props) {
   return (
     <TouchableOpacity
       style={valOn === valor ? styles.botaoAtivado : styles.botaoDesativado}

@@ -1,11 +1,35 @@
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+import CardBookMedium from "@/src/Components/cardBookMedium";
 import Header from "@/src/Components/header";
-import { OptionSection } from "@/src/Components/optionSection";
+import OptionSection from "@/src/Components/optionSection";
 
 export default function Historic() {
   const [section, setSection] = useState("reserva");
+
+  const bookData = [
+    {
+      id: "1",
+      title: "Entendendo Algoritmos",
+      author: "Aditya Y. Bhargava",
+      day: "1",
+      uri: require("@/assets/images/image.png"),
+    },
+    {
+      id: "2",
+      title: "Não Entendendo Algoritmos",
+      author: "Aditya Y. Bhargava",
+      day: "4",
+      uri: require("@/assets/images/image.png"),
+    },
+    {
+      id: "3",
+      title: "Desisto de Algoritmos",
+      author: "Aditya Y. Bhargava",
+      uri: require("@/assets/images/image.png"),
+    },
+  ];
 
   function changeSection(val: string) {
     setSection(val);
@@ -27,7 +51,7 @@ export default function Historic() {
             }}
             valOn={section}
             valor={"reserva"}
-            qtd={2}
+            qtd={0}
           >
             Reservados
           </OptionSection>
@@ -38,11 +62,20 @@ export default function Historic() {
             }}
             valOn={section}
             valor={"emprestimo"}
-            qtd={0}
+            qtd={2}
           >
             Emprestados
           </OptionSection>
         </View>
+
+        {section === "emprestimo" ? (
+          <View style={styles.booksContainer}>
+            <CardBookMedium book={bookData[0]} />
+            <CardBookMedium book={bookData[1]} />
+          </View>
+        ) : (
+          <View style={styles.booksContainer}></View>
+        )}
       </ScrollView>
     </View>
   );
@@ -73,5 +106,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 30,
     gap: "4%",
+  },
+  booksContainer: {
+    paddingVertical: 5,
   },
 });
