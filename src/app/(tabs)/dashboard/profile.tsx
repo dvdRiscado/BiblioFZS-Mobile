@@ -1,6 +1,7 @@
 import BtnProfile from "@/src/Components/btnProfile";
 import HeaderProfile from "@/src/Components/headerProfile";
 import TxtTitle from "@/src/Components/txtTitle";
+import { router } from "expo-router";
 import {
   Image,
   ScrollView,
@@ -11,6 +12,10 @@ import {
 } from "react-native";
 
 export default function Profile() {
+  function toEdit() {
+    router.push("/editprofile");
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -27,7 +32,7 @@ export default function Profile() {
                 source={require("@/assets/images/perfil_teste.png")}
               />
             </View>
-            <TouchableOpacity style={styles.photoButton}>
+            <TouchableOpacity style={styles.photoButton} onPress={toEdit}>
               <Text style={styles.textPhotoButton}>Editar Perfil</Text>
             </TouchableOpacity>
           </View>

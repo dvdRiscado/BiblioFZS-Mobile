@@ -17,6 +17,10 @@ export default function Layout() {
       />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="detalheslivro" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="editprofile"
+        options={{ title: "Editar perfil", headerShadowVisible: false }}
+      />
     </Stack>
   );
 }

@@ -1,5 +1,5 @@
 import { Button } from "@/src/Components/button";
-import { InputText } from "@/src/Components/inputText";
+import { InputIconText } from "@/src/Components/inputIconText";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -18,13 +18,16 @@ export default function Login() {
         <Text style={styles.subtitulo}>Faça login para continuar</Text>
       </View>
       <View>
-        <InputText type="email" placeholder="email@fatec.sp.gov.br"></InputText>
-        <InputText
+        <InputIconText
+          type="email"
+          placeholder="email@fatec.sp.gov.br"
+        ></InputIconText>
+        <InputIconText
           type="password"
           placeholder="********"
           onChangeText={(text) => changePassword(text)}
           value={password}
-        ></InputText>
+        ></InputIconText>
         <Text>Esqueceu a senha?</Text>
       </View>
       <Button text="Entrar >" />
