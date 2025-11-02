@@ -1,8 +1,11 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { CameraView, useCameraPermissions } from "expo-camera";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
+  Alert,
+  Button,
   Image,
   Modal,
   StyleSheet,
@@ -13,6 +16,26 @@ import {
 
 export default function QrCode() {
   const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisivelQR, setModalVisivelQR] = useState(false)
+  const [permissao, requestPermission] = useCameraPermissions()
+  const dadoQRLock = useRef(false)
+  async function handleOpenCamera(){
+      try{
+          const {granted} = await requestPermission()
+          if (!granted){
+            return Alert.alert("camera","Vc precisa habilitar a câmera!")
+          }
+          setModalVisivelQR(true)
+          dadoQRLock.current = false
+      } catch (erro) {
+          console.log(erro)
+      }
+  }
+
+  function handleQRCodeRead(data: string){
+    setModalVisivelQR(false)
+    Alert.alert("QRcode", data)
+  } 
 
   return (
     <View style={styles.container}>
@@ -41,10 +64,27 @@ export default function QrCode() {
       </Modal>
 
       <Image source={require("@/assets/images/img/qrcode.png")}></Image>
-      <TouchableOpacity style={styles.botao}>
+      <TouchableOpacity style={styles.botao} onPress={handleOpenCamera}>
         <MaterialCommunityIcons name="border-radius" size={24} color="white" />
         <Text style={styles.textoBotao}>Ler QR Code</Text>
       </TouchableOpacity>
+
+      <Modal visible={modalVisivelQR} style={{ flex: 1}}>
+        {/* todo o qr funciona aqui */}
+        <CameraView 
+          style={{ flex: 1}} 
+          facing='back' 
+          onBarcodeScanned={ ({ data }) => { 
+            if(data && !dadoQRLock.current){
+              dadoQRLock.current = true
+              setTimeout(() => handleQRCodeRead(data), 1000)
+            }
+          }}
+        />
+          <View>
+            <Button title='fechar' onPress={() => setModalVisivelQR(false)}/>
+          </View>
+      </Modal>
     </View>
   );
 }

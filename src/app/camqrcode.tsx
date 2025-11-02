@@ -1,30 +1,45 @@
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-import { router } from 'expo-router';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { CameraView } from "expo-camera";
+import { useState } from 'react';
+import { Button, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function QrCode(){
-    function goHistoricoCam(){
-        router.push("/historicoqrcode")
+    const [modalVisivel, setModalVisivel] = useState(false)
+
+    function handleOpenCamera(){
+        try{
+            setModalVisivel(true)
+        } catch (erro) {
+            console.log(erro)
+        }
     }
+
     return (
         <View style={styles.container}>
             <Image source={require('@/assets/images/img/qrcode.png')}></Image>
-            <TouchableOpacity style={styles.botao} >
-                <MaterialCommunityIcons name="border-radius" size={24} color="white" />
+            <Button title='abrir qr' onPress={handleOpenCamera}></Button>
+            {/* <Button title='abrir qr'>
+                <MaterialCommunityIcons name="border-radius" size={24} color="white" onPress={handleOpenCamera}/>
                 <Text style={styles.textoBotao}>Ler QR Code</Text>
-            </TouchableOpacity> 
+            </Button>  */}
             <View style={styles.navContainer}>
-                <TouchableOpacity style={styles.itemContainer}>
+                <TouchableOpacity style={styles.itemContainer} >
                     <MaterialCommunityIcons name="qrcode-scan" size={32} color="white" />
                     <Text style={styles.textoItem}>Câmera</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.itemContainer} onPress={goHistoricoCam}>
+                <TouchableOpacity style={styles.itemContainer}>
                     <FontAwesome5 name="history" size={28} color="white" />
                     <Text style={styles.textoItem}>Histórico</Text>
                 </TouchableOpacity>
             </View>
+            <Modal visible={modalVisivel} style={{ flex: 1}}>
+                <CameraView style={{ flex: 1}} facing='back'/>
+                <View>
+                    <Button title='fechar' onPress={() => setModalVisivel(false)}/>
+                </View>
+            </Modal>
         </View>
     )
 }
