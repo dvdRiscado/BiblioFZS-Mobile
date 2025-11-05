@@ -39,6 +39,7 @@ export default function Profile() {
         </View>
         <View style={styles.optionContainer}>
           <TxtTitle text="O que está procurando?" />
+          <BtnProfile text="Favoritos" icon="" />
           <BtnProfile text="Empréstimos" icon="" />
           <BtnProfile text="Reservas" icon="" />
           <BtnProfile text="Histórico" icon="" />
