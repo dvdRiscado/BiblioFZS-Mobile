@@ -1,5 +1,7 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import BtnBack from "../Components/btnBack";
 import { Button } from "../Components/button";
 import InputText from "../Components/inputText";
 
@@ -8,6 +10,14 @@ export default function Register() {
 
   function upSection() {
     setSection(section + 1);
+
+    if (section > 3) {
+      router.push("/dashboard");
+    }
+  }
+
+  function backSection() {
+    setSection(section - 1);
   }
 
   // Register: Usuário
@@ -108,20 +118,26 @@ export default function Register() {
                 inputMode="numeric"
                 placeholder="Digite o seu CEP"
               />
-              <Text style={styles.label}>Cidade</Text>
-              <InputText
-                value={cidade}
-                onChangeText={(value) => setCidade(value)}
-                inputMode="text"
-                placeholder="Digite sua cidade"
-              />
-              <Text style={styles.label}>Estado</Text>
-              <InputText
-                value={estado}
-                onChangeText={(value) => setEstado(value)}
-                inputMode="text"
-                placeholder="Digite seu estado"
-              />
+              <View style={styles.cidUfContainer}>
+                <View style={styles.cidContainer}>
+                  <Text style={styles.label}>Cidade</Text>
+                  <InputText
+                    value={cidade}
+                    onChangeText={(value) => setCidade(value)}
+                    inputMode="text"
+                    placeholder="Digite sua cidade"
+                  />
+                </View>
+                <View style={styles.ufContainer}>
+                  <Text style={styles.label}>Estado</Text>
+                  <InputText
+                    value={estado}
+                    onChangeText={(value) => setEstado(value)}
+                    inputMode="text"
+                    placeholder="Digite seu UF"
+                  />
+                </View>
+              </View>
               <Text style={styles.label}>Bairro</Text>
               <InputText
                 value={bairro}
@@ -136,22 +152,36 @@ export default function Register() {
                 inputMode="text"
                 placeholder="Digite sua rua"
               />
-              <Text style={styles.label}>Número</Text>
-              <InputText
-                value={number}
-                onChangeText={(value) => setNumber(value)}
-                inputMode="numeric"
-                placeholder="Digite o número"
-              />
-              <Text style={styles.label}>Complemento</Text>
-              <InputText
-                value={complemento}
-                onChangeText={(value) => setComplemento(value)}
-                inputMode="text"
-                placeholder="Digite o complemento"
-              />
+
+              <View style={styles.numCompContainer}>
+                <View style={styles.numContainer}>
+                  <Text style={styles.label}>Número</Text>
+                  <InputText
+                    value={number}
+                    onChangeText={(value) => setNumber(value)}
+                    inputMode="numeric"
+                    placeholder="Digite o número"
+                  />
+                </View>
+                <View style={styles.compContainer}>
+                  <Text style={styles.label}>Complemento</Text>
+                  <InputText
+                    value={complemento}
+                    onChangeText={(value) => setComplemento(value)}
+                    inputMode="text"
+                    placeholder="Digite o complemento"
+                  />
+                </View>
+              </View>
             </View>
-            <Button text="Continuar" onPress={upSection} />
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonBack}>
+                <BtnBack onPress={backSection} />
+              </View>
+              <View style={styles.buttonNext}>
+                <Button text="Continuar" onPress={upSection} />
+              </View>
+            </View>
           </View>
         ) : section === 2 ? (
           <View style={styles.inputContainer}>
@@ -199,7 +229,14 @@ export default function Register() {
                 placeholder="Digite a data de término"
               />
             </View>
-            <Button text="Continuar" onPress={upSection} />
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonBack}>
+                <BtnBack onPress={backSection} />
+              </View>
+              <View style={styles.buttonNext}>
+                <Button text="Continuar" onPress={upSection} />
+              </View>
+            </View>
           </View>
         ) : (
           <View style={styles.inputContainer}>
@@ -228,7 +265,14 @@ export default function Register() {
                 secureTextEntry
               />
             </View>
-            <Button text="Continuar" onPress={upSection} />
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonBack}>
+                <BtnBack onPress={backSection} />
+              </View>
+              <View style={styles.buttonNext}>
+                <Button text="Finalizar" onPress={upSection} />
+              </View>
+            </View>
           </View>
         )}
       </ScrollView>
@@ -251,7 +295,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     gap: 32,
-    paddingBottom: 48,
+    paddingBottom: 60,
   },
   titulo: {
     fontSize: 48,
@@ -262,9 +306,43 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#707070",
   },
-
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+  },
+  buttonBack: {
+    width: "20%",
+  },
+  buttonNext: {
+    width: "80%",
+  },
   label: {
     fontWeight: "bold",
     fontSize: 16,
+  },
+
+  cidUfContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cidContainer: {
+    width: "62%",
+  },
+  ufContainer: {
+    width: "35%",
+  },
+  numCompContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  numContainer: {
+    width: "30%",
+  },
+  compContainer: {
+    width: "67%",
   },
 });
