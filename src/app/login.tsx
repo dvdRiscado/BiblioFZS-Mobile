@@ -1,10 +1,15 @@
 import { Button } from "@/src/Components/button";
 import { InputIconText } from "@/src/Components/inputIconText";
+import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Login() {
   const [password, setPassword] = useState("");
+
+  function goDashboard() {
+    router.push("/(tabs)/dashboard");
+  }
 
   function changePassword(text: string) {
     setPassword(text);
@@ -30,7 +35,7 @@ export default function Login() {
         ></InputIconText>
         <Text>Esqueceu a senha?</Text>
       </View>
-      <Button text="Entrar >" />
+      <Button text="Entrar >" onPress={goDashboard} />
     </View>
   );
 }
@@ -38,7 +43,8 @@ export default function Login() {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 48,
+    paddingVertical: 48,
+    paddingHorizontal: 24,
     gap: 32,
     backgroundColor: "#FFF",
   },
