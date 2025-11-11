@@ -21,6 +21,10 @@ export default function Layout() {
         name="editprofile"
         options={{ title: "Editar perfil", headerShadowVisible: false }}
       />
+      <Stack.Screen
+        name="favorites"
+        options={{ title: "Favoritos", headerShadowVisible: false }}
+      />
     </Stack>
   );
 }

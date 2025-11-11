@@ -13,7 +13,6 @@ import {
 import { Button } from "../Components/button";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { router } from "expo-router";
 
 export default function EditProfile() {
   const [name, setName] = useState("David");
@@ -69,7 +68,7 @@ export default function EditProfile() {
             inputMode="tel"
           />
         </View>
-        <Button text="Salvar Alterações" onPress={router.back()} />
+        <Button text="Salvar Alterações" onPress={console.log("clicado")} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
