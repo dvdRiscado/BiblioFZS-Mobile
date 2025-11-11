@@ -13,10 +13,6 @@ export default function Home() {
     router.push("/login");
   }
 
-  function goDashboard() {
-    router.push("/dashboard");
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>

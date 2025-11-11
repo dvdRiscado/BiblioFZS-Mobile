@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import CardBookMedium from "@/src/Components/cardBookMedium";
+import CardBookReMedium from "@/src/Components/cardBookReMedium";
 import Header from "@/src/Components/header";
 import OptionSection from "@/src/Components/optionSection";
 
@@ -27,6 +28,7 @@ export default function Historic() {
       id: "3",
       title: "Desisto de Algoritmos",
       author: "Aditya Y. Bhargava",
+      day: "1",
       uri: require("@/assets/images/image.png"),
     },
   ];
@@ -51,7 +53,7 @@ export default function Historic() {
             }}
             valOn={section}
             valor={"reserva"}
-            qtd={0}
+            qtd={1}
           >
             Reservados
           </OptionSection>
@@ -74,7 +76,9 @@ export default function Historic() {
             <CardBookMedium book={bookData[1]} />
           </View>
         ) : (
-          <View style={styles.booksContainer}></View>
+          <View style={styles.booksContainer}>
+            <CardBookReMedium book={bookData[2]} />
+          </View>
         )}
       </ScrollView>
     </View>
@@ -93,7 +97,6 @@ const styles = StyleSheet.create({
     marginBottom: 110,
   },
   headline: {
-    marginTop: "8%",
     marginBottom: "4%",
     fontSize: 24,
     fontWeight: "bold",
