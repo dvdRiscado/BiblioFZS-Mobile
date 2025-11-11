@@ -3,17 +3,50 @@ import { InputIconText } from "@/src/Components/inputIconText";
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { InputIconPassword } from "../Components/inputPassword";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  function goDashboard() {
-    router.push("/(tabs)/dashboard");
+  function validateEmail(text: string) {
+    setEmail(text);
+    if (text === "") {
+      setEmailError("O email é obrigatório");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
+      setEmailError("Digite um email válido");
+    } else {
+      setEmailError("");
+    }
   }
 
-  function changePassword(text: string) {
+  function validatePassword(text: string) {
     setPassword(text);
-    console.log(password);
+    if (text === "") {
+      setPasswordError("A senha é obrigatória");
+    } else if (text.length < 8) {
+      setPasswordError("A senha deve ter pelo menos 8 caracteres");
+    } else {
+      setPasswordError("");
+    }
+  }
+
+  function goDashboard() {
+    console.log("Clicado!");
+
+    if (
+      emailError === "" &&
+      passwordError === "" &&
+      email !== "" &&
+      password !== ""
+    ) {
+      router.push("/(tabs)/dashboard");
+    } else {
+      validateEmail(email);
+      validatePassword(password);
+    }
   }
 
   return (
@@ -26,13 +59,19 @@ export default function Login() {
         <InputIconText
           type="email"
           placeholder="email@fatec.sp.gov.br"
-        ></InputIconText>
-        <InputIconText
+          onChangeText={(text) => validateEmail(text)}
+          value={email}
+        />
+        {emailError !== "" && <Text style={styles.caption}>{emailError}</Text>}
+        <InputIconPassword
           type="password"
           placeholder="********"
-          onChangeText={(text) => changePassword(text)}
+          onChangeText={(text) => validatePassword(text)}
           value={password}
-        ></InputIconText>
+        />
+        {passwordError !== "" && (
+          <Text style={styles.caption}>{passwordError}</Text>
+        )}
         <Text>Esqueceu a senha?</Text>
       </View>
       <Button text="Entrar >" onPress={goDashboard} />
@@ -56,5 +95,10 @@ export const styles = StyleSheet.create({
   subtitulo: {
     fontSize: 16,
     color: "#707070",
+  },
+  caption: {
+    fontSize: 12,
+    color: "#B9030F",
+    marginLeft: 10,
   },
 });
