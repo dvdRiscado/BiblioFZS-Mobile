@@ -6,7 +6,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-export default function BtnProfile({ text, icon }: any) {
+export default function BtnProfile({ text, icon, onPress }: any) {
   function chooseIcon() {
     switch (icon) {
       case "share":
@@ -23,7 +23,7 @@ export default function BtnProfile({ text, icon }: any) {
   }
 
   return (
-    <TouchableOpacity style={styles.buttonContainer}>
+    <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
       <View style={styles.buttonText}>
         {chooseIcon()}
         <Text style={styles.text}>{text}</Text>
