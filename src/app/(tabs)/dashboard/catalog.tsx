@@ -75,16 +75,16 @@ export default function Catalog() {
         </View>
         <View style={styles.suggestion}>
           <View style={styles.row}>
-            <CardBookSmall book={bookData[0]} />
-            <CardBookSmall book={bookData[1]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
           </View>
           <View style={styles.row}>
-            <CardBookSmall book={bookData[2]} />
-            <CardBookSmall book={bookData[0]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
           </View>
           <View style={styles.row}>
-            <CardBookSmall book={bookData[1]} />
-            <CardBookSmall book={bookData[2]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
           </View>
         </View>
       </ScrollView>

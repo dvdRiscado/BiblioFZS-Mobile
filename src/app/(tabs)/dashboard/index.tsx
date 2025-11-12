@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { Extrapolate, interpolate } from "react-native-reanimated";
@@ -40,6 +41,11 @@ export default function Home() {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
+
+  function goDetalhesLivro() {
+    router.navigate("/detalheslivro");
+  }
+  ("");
 
   const animationStyle = useCallback((value) => {
     "worklet";
@@ -112,16 +118,16 @@ export default function Home() {
         </Text>
         <View style={styles.suggestion}>
           <View style={styles.row}>
-            <CardBookSmall book={bookData[0]} />
-            <CardBookSmall book={bookData[1]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
           </View>
           <View style={styles.row}>
-            <CardBookSmall book={bookData[2]} />
-            <CardBookSmall book={bookData[0]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
           </View>
           <View style={styles.row}>
-            <CardBookSmall book={bookData[1]} />
-            <CardBookSmall book={bookData[2]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
+            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
           </View>
         </View>
       </ScrollView>

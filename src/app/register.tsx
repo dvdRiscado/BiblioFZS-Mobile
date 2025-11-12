@@ -1,7 +1,10 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BtnBack from "../Components/btnBack";
 import { Button } from "../Components/button";
+import InputDatePicker from "../Components/inputDatePicker";
+import { InputPassword } from "../Components/inputPassword";
 import { InputPickerSelect } from "../Components/inputPickerSelect";
 import InputText from "../Components/inputText";
 
@@ -54,12 +57,17 @@ export default function Register() {
         lastname !== "" &&
         cpf !== "" &&
         email !== "" &&
-        telephone !== ""
+        telephone !== "" &&
+        nameError === "" &&
+        lastnameError === "" &&
+        cpfError === "" &&
+        emailError === "" &&
+        telephoneError === ""
       ) {
         setSection(section + 1);
       } else {
         validateName(name);
-        validateLastname(password);
+        validateLastname(lastname);
         validateCpf(cpf);
         validateEmail(email);
         validateTelephone(telephone);
@@ -71,7 +79,13 @@ export default function Register() {
         estado !== "" &&
         bairro !== "" &&
         rua !== "" &&
-        number !== ""
+        number !== "" &&
+        cepError === "" &&
+        cidadeError === "" &&
+        estadoError === "" &&
+        bairroError === "" &&
+        ruaError === "" &&
+        numberError === ""
       ) {
         setSection(section + 1);
       } else {
@@ -88,7 +102,12 @@ export default function Register() {
         raRm !== "" &&
         curso !== "" &&
         inicioCurso !== "" &&
-        fimCurso !== ""
+        fimCurso !== "" &&
+        instituicaoError === "" &&
+        raRmError === "" &&
+        cursoError === "" &&
+        inicioCursoError === "" &&
+        fimCursoError === ""
       ) {
         setSection(section + 1);
       } else {
@@ -97,6 +116,18 @@ export default function Register() {
         validateCurso(curso);
         validateInicioCurso(inicioCurso);
         validateFimCurso(fimCurso);
+      }
+    } else if (section === 3) {
+      if (
+        password !== "" &&
+        confirmPassword !== "" &&
+        passwordError === "" &&
+        confirmPasswordError === ""
+      ) {
+        router.push("/(tabs)/dashboard");
+      } else {
+        validatePassword(password);
+        validateConfirmPassword(confirmPassword);
       }
     }
   }
@@ -590,23 +621,13 @@ export default function Register() {
               )}
 
               <Text style={styles.label}>Início do Curso</Text>
-              <InputText
-                value={inicioCurso}
-                onChangeText={(value) => validateInicioCurso(value)}
-                inputMode="numeric"
-                placeholder="Digite a data de início"
-              />
+              <InputDatePicker change={validateInicioCurso} />
               {inicioCursoError !== "" && (
                 <Text style={styles.caption}>{inicioCursoError}</Text>
               )}
 
               <Text style={styles.label}>Fim do Curso</Text>
-              <InputText
-                value={fimCurso}
-                onChangeText={(value) => validateFimCurso(value)}
-                inputMode="numeric"
-                placeholder="Digite a data de término"
-              />
+              <InputDatePicker change={validateFimCurso} />
               {fimCursoError !== "" && (
                 <Text style={styles.caption}>{fimCursoError}</Text>
               )}
@@ -631,7 +652,8 @@ export default function Register() {
             {/* Campos de Senha */}
             <View>
               <Text style={styles.label}>Senha</Text>
-              <InputText
+              <InputPassword
+                type="password"
                 value={password}
                 onChangeText={(value) => validatePassword(value)}
                 inputMode="text"
@@ -643,7 +665,8 @@ export default function Register() {
               )}
 
               <Text style={styles.label}>Confirmar Senha</Text>
-              <InputText
+              <InputPassword
+                type="password"
                 value={confirmPassword}
                 onChangeText={(value) => validateConfirmPassword(value)}
                 inputMode="text"

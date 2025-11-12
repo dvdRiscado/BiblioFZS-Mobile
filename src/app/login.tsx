@@ -3,7 +3,7 @@ import { InputIconText } from "@/src/Components/inputIconText";
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { InputIconPassword } from "../Components/inputPassword";
+import { InputIconPassword } from "../Components/inputIconPassword";
 
 export default function Login() {
   const [email, setEmail] = useState("");
