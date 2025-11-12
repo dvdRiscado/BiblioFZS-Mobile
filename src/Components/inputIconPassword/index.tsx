@@ -13,7 +13,7 @@ type Props = TextInputProps & {
   type: string;
 };
 
-export function InputPassword({ type, ...rest }: Props) {
+export function InputIconPassword({ type, ...rest }: Props) {
   const [view, setView] = useState(false);
 
   function viewPassword() {
@@ -22,6 +22,7 @@ export function InputPassword({ type, ...rest }: Props) {
 
   return (
     <View style={styles.container}>
+      <AntDesign style={styles.icon} name="lock" size={20} color="black" />
       <TextInput style={styles.input} {...rest} secureTextEntry={!view} />
 
       <TouchableOpacity style={styles.button} onPress={viewPassword}>

@@ -5,7 +5,11 @@ import { useState } from "react";
 import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 
-export default function InputDatePicker() {
+type Props = {
+  change: Function;
+};
+
+export default function InputDatePicker({ change }: Props) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
@@ -17,6 +21,7 @@ export default function InputDatePicker() {
     const clamped = current < minDate ? minDate : current;
     setOpen(Platform.OS === "ios");
     setDate(clamped);
+    change(date);
   }
 
   function handleDatePicker() {
@@ -28,6 +33,7 @@ export default function InputDatePicker() {
           if (selectedDate) {
             const chosen = selectedDate < minDate ? minDate : selectedDate;
             setDate(chosen);
+            change(date);
           }
         },
         mode: "date",

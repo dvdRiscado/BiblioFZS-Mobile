@@ -1,18 +1,25 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  GestureResponderEvent,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { styles } from "./style";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import RatingStars from "../ratingStars";
 
-export default function CardBookSmall({ book }: any) {
-  function onPressTest() {
-    console.log("buga??");
-  }
+type CardBookSmallProps = {
+  book: any;
+  clicked: (event: GestureResponderEvent) => void;
+};
 
+export default function CardBookSmall({ book, clicked }: CardBookSmallProps) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.imageWrapper}>
+      <TouchableOpacity style={styles.imageWrapper} onPress={clicked}>
         <Image style={styles.image} source={book.uri} resizeMode="contain" />
 
         <View style={styles.info}>

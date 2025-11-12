@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     borderRadius: 18,
-    marginTop: 7,
+    marginTop: 15,
     marginBottom: 5,
     height: 50,
   },
@@ -16,8 +16,7 @@ export const styles = StyleSheet.create({
     height: 64,
     marginTop: 3,
     fontSize: 18,
-    paddingLeft: 15,
-    paddingRight: 48,
+    paddingHorizontal: 48,
   },
   icon: {
     position: "absolute",
