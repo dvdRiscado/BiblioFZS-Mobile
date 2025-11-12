@@ -2,10 +2,50 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BtnBack from "../Components/btnBack";
 import { Button } from "../Components/button";
+import { InputPickerSelect } from "../Components/inputPickerSelect";
 import InputText from "../Components/inputText";
 
 export default function Register() {
   const [section, setSection] = useState(0);
+
+  const estados = [
+    { label: "AC", value: "AC" },
+    { label: "AL", value: "AL" },
+    { label: "AP", value: "AP" },
+    { label: "AM", value: "AM" },
+    { label: "BA", value: "BA" },
+    { label: "CE", value: "CE" },
+    { label: "DF", value: "DF" },
+    { label: "ES", value: "ES" },
+    { label: "GO", value: "GO" },
+    { label: "MA", value: "MA" },
+    { label: "MT", value: "MT" },
+    { label: "MS", value: "MS" },
+    { label: "MG", value: "MG" },
+    { label: "PA", value: "PA" },
+    { label: "PB", value: "PB" },
+    { label: "PR", value: "PR" },
+    { label: "PE", value: "PE" },
+    { label: "PI", value: "PI" },
+    { label: "RJ", value: "RJ" },
+    { label: "RN", value: "RN" },
+    { label: "RS", value: "RS" },
+    { label: "RO", value: "RO" },
+    { label: "RR", value: "RR" },
+    { label: "SC", value: "SC" },
+    { label: "SP", value: "SP" },
+    { label: "SE", value: "SE" },
+    { label: "TO", value: "TO" },
+  ];
+
+  const instituicoes = [
+    { label: "Fatec Zona Sul", value: "Fatec Zona Sul" },
+    {
+      label: "Etec Carolina Carinhato Sampaio",
+      value: "Etec Carolina Carinhato Sampaio",
+    },
+    { label: "Outra Instituição", value: "Outra Instituição" },
+  ];
 
   function upSection() {
     if (section === 0) {
@@ -43,7 +83,20 @@ export default function Register() {
         validateNumber(number);
       }
     } else if (section === 2) {
-      if (raRm === "") {
+      if (
+        instituicao !== "" &&
+        raRm !== "" &&
+        curso !== "" &&
+        inicioCurso !== "" &&
+        fimCurso !== ""
+      ) {
+        setSection(section + 1);
+      } else {
+        validateInstituicao(instituicao);
+        validateRaRm(raRm);
+        validateCurso(curso);
+        validateInicioCurso(inicioCurso);
+        validateFimCurso(fimCurso);
       }
     }
   }
@@ -92,6 +145,12 @@ export default function Register() {
   const [ruaError, setRuaError] = useState("");
   const [numberError, setNumberError] = useState("");
   const [raRmError, setRaRmError] = useState("");
+  const [instituicaoError, setInstituicaoError] = useState("");
+  const [cursoError, setCursoError] = useState("");
+  const [inicioCursoError, setInicioCursoError] = useState("");
+  const [fimCursoError, setFimCursoError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   // Funções de Validação
   function validateName(text: string) {
@@ -175,8 +234,6 @@ export default function Register() {
     setEstado(text);
     if (text === "") {
       setEstadoError("O estado é obrigatório");
-    } else if (text.length !== 2) {
-      setEstadoError("Digite a sigla do estado (ex: SP)");
     } else {
       setEstadoError("");
     }
@@ -217,10 +274,97 @@ export default function Register() {
     setRaRm(text);
     if (text === "") {
       setRaRmError("O RA/RM é obrigatório");
-    } else if (text.length < 3) {
-      setRaRmError("O RA/RM deve ter pelo menos 3 caracteres");
+    } else if (text.length < 13) {
+      setRaRmError("O RA/RM deve ter 13 caracteres");
     } else {
       setRaRmError("");
+    }
+  }
+
+  function validateInstituicao(value: string) {
+    setInstituicao(value);
+    if (value === "") {
+      setInstituicaoError("A instituição é obrigatória");
+    } else {
+      setInstituicaoError("");
+    }
+  }
+
+  function validateCurso(text: string) {
+    setCurso(text);
+    if (text === "") {
+      setCursoError("O curso é obrigatório");
+    } else if (text.length < 3) {
+      setCursoError("O curso deve ter pelo menos 3 caracteres");
+    } else {
+      setCursoError("");
+    }
+  }
+
+  function validateInicioCurso(text: string) {
+    setInicioCurso(text);
+    if (text === "") {
+      setInicioCursoError("A data de início é obrigatória");
+    } else {
+      setInicioCursoError("");
+    }
+  }
+
+  function validateFimCurso(text: string) {
+    setFimCurso(text);
+    if (text === "") {
+      setFimCursoError("A data de término é obrigatória");
+    } else {
+      setFimCursoError("");
+    }
+  }
+
+  function validatePassword(text: string) {
+    setPassword(text);
+    if (text === "") {
+      setPasswordError("A senha é obrigatória");
+    } else if (text.length < 8) {
+      setPasswordError("A senha deve ter pelo menos 8 caracteres");
+    } else {
+      setPasswordError("");
+    }
+  }
+
+  function validateConfirmPassword(text: string) {
+    setConfirmPassword(text);
+    if (text === "") {
+      setConfirmPasswordError("A confirmação de senha é obrigatória");
+    } else if (text !== password) {
+      setConfirmPasswordError("As senhas não correspondem");
+    } else {
+      setConfirmPasswordError("");
+    }
+  }
+
+  // Outras funções
+  function decideListCurso(instituicaoValue: string) {
+    if (instituicaoValue === "Fatec Zona Sul") {
+      return [
+        {
+          label: "Análise e Desenvolvimento de Sistemas",
+          value: "Análise e Desenvolvimento de Sistemas",
+        },
+        {
+          label: "Desenvolvimento de Software Multiplataforma",
+          value: "Desenvolvimento de Software Multiplataforma",
+        },
+        { label: "Gestão Empresarial", value: "Gestão Empresarial" },
+        { label: "Logística", value: "Logística" },
+      ];
+    } else if (instituicaoValue === "Etec Carolina Carinhato Sampaio") {
+      return [
+        { label: "Administração", value: "Administração" },
+        { label: "Eletrônica", value: "Eletrônica" },
+        { label: "Enfermagem", value: "Enfermagem" },
+        { label: "Recursos Humanos", value: "Recursos Humanos" },
+      ];
+    } else {
+      return [];
     }
   }
 
@@ -337,12 +481,10 @@ export default function Register() {
 
                 <View style={styles.ufContainer}>
                   <Text style={styles.label}>Estado</Text>
-                  <InputText
-                    value={estado}
-                    onChangeText={(value) => validateEstado(value)}
-                    inputMode="text"
-                    placeholder="Digite seu UF"
-                    maxLength={2}
+                  <InputPickerSelect
+                    change={validateEstado}
+                    items={estados}
+                    text={"Escolha seu UF"}
                   />
                   {estadoError !== "" && (
                     <Text style={styles.caption}>{estadoError}</Text>
@@ -378,7 +520,7 @@ export default function Register() {
                     value={number}
                     onChangeText={(value) => validateNumber(value)}
                     inputMode="numeric"
-                    placeholder="Digite o número"
+                    placeholder="Nº"
                   />
                   {numberError !== "" && (
                     <Text style={styles.caption}>{numberError}</Text>
@@ -416,44 +558,58 @@ export default function Register() {
             {/* Campos de Matrícula */}
             <View>
               <Text style={styles.label}>Instituição</Text>
-              <InputText
-                value={instituicao}
-                onChangeText={(value) => setInstituicao(value)}
-                inputMode="text"
-                placeholder="Digite sua instituição"
+              <InputPickerSelect
+                change={validateInstituicao}
+                items={instituicoes}
+                text="Escolha sua instituição"
               />
+              {instituicaoError !== "" && (
+                <Text style={styles.caption}>{instituicaoError}</Text>
+              )}
+
               <Text style={styles.label}>RA/RM</Text>
               <InputText
                 value={raRm}
                 onChangeText={(value) => validateRaRm(value)}
-                inputMode="text"
+                inputMode="numeric"
                 placeholder="Digite seu RA/RM"
+                maxLength={13}
               />
               {raRmError !== "" && (
                 <Text style={styles.caption}>{raRmError}</Text>
               )}
 
               <Text style={styles.label}>Curso</Text>
-              <InputText
-                value={curso}
-                onChangeText={(value) => setCurso(value)}
-                inputMode="text"
-                placeholder="Digite seu curso"
+              <InputPickerSelect
+                change={validateCurso}
+                items={decideListCurso(instituicao)}
+                text="Escolha seu curso"
               />
+              {cursoError !== "" && (
+                <Text style={styles.caption}>{cursoError}</Text>
+              )}
+
               <Text style={styles.label}>Início do Curso</Text>
               <InputText
                 value={inicioCurso}
-                onChangeText={(value) => setInicioCurso(value)}
+                onChangeText={(value) => validateInicioCurso(value)}
                 inputMode="numeric"
                 placeholder="Digite a data de início"
               />
+              {inicioCursoError !== "" && (
+                <Text style={styles.caption}>{inicioCursoError}</Text>
+              )}
+
               <Text style={styles.label}>Fim do Curso</Text>
               <InputText
                 value={fimCurso}
-                onChangeText={(value) => setFimCurso(value)}
+                onChangeText={(value) => validateFimCurso(value)}
                 inputMode="numeric"
                 placeholder="Digite a data de término"
               />
+              {fimCursoError !== "" && (
+                <Text style={styles.caption}>{fimCursoError}</Text>
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <View style={styles.buttonBack}>
@@ -477,19 +633,26 @@ export default function Register() {
               <Text style={styles.label}>Senha</Text>
               <InputText
                 value={password}
-                onChangeText={(value) => setPassword(value)}
+                onChangeText={(value) => validatePassword(value)}
                 inputMode="text"
                 placeholder="Digite sua senha"
                 secureTextEntry
               />
+              {passwordError !== "" && (
+                <Text style={styles.caption}>{passwordError}</Text>
+              )}
+
               <Text style={styles.label}>Confirmar Senha</Text>
               <InputText
                 value={confirmPassword}
-                onChangeText={(value) => setConfirmPassword(value)}
+                onChangeText={(value) => validateConfirmPassword(value)}
                 inputMode="text"
                 placeholder="Confirme sua senha"
                 secureTextEntry
               />
+              {confirmPasswordError !== "" && (
+                <Text style={styles.caption}>{confirmPasswordError}</Text>
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <View style={styles.buttonBack}>
