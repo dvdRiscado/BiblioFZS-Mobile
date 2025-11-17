@@ -56,7 +56,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="historic"
+        name="[reserve_loan]"
         options={{
           headerShown: false,
           title: "Histórico",

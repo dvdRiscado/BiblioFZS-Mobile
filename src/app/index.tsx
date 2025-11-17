@@ -1,20 +1,40 @@
 import { Button } from "@/src/Components/button";
 import { router } from "expo-router";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  StatusBar,
+} from "react-native";
 import "react-native-gesture-handler";
 
 export default function Home() {
   function goRegister() {
-    console.log("foi pro cadastro");
+    console.log("foi ao cadastro");
     router.push("/register");
   }
 
   function goLogin() {
+    console.log("foi ao login");
     router.push("/login");
+  }
+
+  function goDashboard() {
+    console.log("foi ao dashboard");
+    router.push("/(tabs)/dashboard");
   }
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        animated={true}
+        barStyle="dark-content"
+        showHideTransition="fade"
+        hidden={false}
+      />
+
       <View style={styles.titleContainer}>
         <Text style={styles.titulo}>BIBLIOFZS</Text>
         <Text style={styles.subtitulo}>
@@ -31,6 +51,9 @@ export default function Home() {
         <Button text="Entrar" onPress={goLogin} />
         <TouchableOpacity style={styles.button} onPress={goRegister}>
           <Text style={styles.buttonText}>Cadastrar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={goDashboard}>
+          <Text style={styles.buttonText}>Atalho</Text>
         </TouchableOpacity>
       </View>
     </View>

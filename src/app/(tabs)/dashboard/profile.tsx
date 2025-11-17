@@ -20,6 +20,28 @@ export default function Profile() {
     router.push("/favorites");
   }
 
+  function toHistoric() {
+    router.push("/historic");
+  }
+
+  function toLoan() {
+    router.push({
+      pathname: "/(tabs)/dashboard/[reserve_loan]",
+      params: { reserve_loan: "emprestimo" },
+    });
+  }
+
+  function toReserve() {
+    router.push({
+      pathname: "/(tabs)/dashboard/[reserve_loan]",
+      params: { reserve_loan: "reserva" },
+    });
+  }
+
+  function toBack() {
+    router.replace("/");
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -44,32 +66,16 @@ export default function Profile() {
         <View style={styles.optionContainer}>
           <TxtTitle text="O que está procurando?" />
           <BtnProfile text="Favoritos" icon="" onPress={toFavorites} />
-          <BtnProfile
-            text="Empréstimos"
-            icon=""
-            onPress={console.log("clicado")}
-          />
-          <BtnProfile
-            text="Reservas"
-            icon=""
-            onPress={console.log("clicado")}
-          />
-          <BtnProfile
-            text="Histórico"
-            icon=""
-            onPress={console.log("clicado")}
-          />
+          <BtnProfile text="Empréstimos" icon="" onPress={toLoan} />
+          <BtnProfile text="Reservas" icon="" onPress={toReserve} />
+          <BtnProfile text="Histórico" icon="" onPress={toHistoric} />
           <TxtTitle text="Opções" />
           <BtnProfile
             text="Compartilhar App"
             icon="share"
             onPress={console.log("clicado")}
           />
-          <BtnProfile
-            text="Sair"
-            icon="logout"
-            onPress={console.log("clicado")}
-          />
+          <BtnProfile text="Sair" icon="logout" onPress={toBack} />
           <TxtTitle text="Preferências" />
           <BtnProfile
             text="Idioma"

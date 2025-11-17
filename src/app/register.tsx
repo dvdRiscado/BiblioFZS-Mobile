@@ -207,10 +207,10 @@ export default function Register() {
   }
 
   function validateCpf(text: string) {
-    setCpf(text);
+    formatCpf(text);
     if (text === "") {
       setCpfError("O Cpf é obrigatório");
-    } else if (text.length < 11) {
+    } else if (text.length < 13) {
       setCpfError("Digite um cpf válido");
     } else {
       setCpfError("");
@@ -372,7 +372,7 @@ export default function Register() {
     }
   }
 
-  // Outras funções
+  // Funções dos Inputs Picker Select
   function decideListCurso(instituicaoValue: string) {
     if (instituicaoValue === "Fatec Zona Sul") {
       return [
@@ -397,6 +397,56 @@ export default function Register() {
     } else {
       return [];
     }
+  }
+
+  // Funções de formatação de texto - CPF
+  function formatCpf(value: string) {
+    let newValue = "";
+
+    if (value[value.length - 1] === "." || value[value.length - 1] === "-") {
+      for (let v = 0; v <= value.length - 2; v++) {
+        newValue += value[v];
+      }
+
+      setCpf(newValue);
+      return;
+    }
+
+    if (value.length === 4) {
+      for (let v = 0; v < value.length; v++) {
+        if (v === 2) {
+          newValue += value[v] + ".";
+        } else {
+          newValue += value[v];
+        }
+      }
+
+      setCpf(newValue);
+    } else if (value.length === 8) {
+      for (let v = 0; v < value.length; v++) {
+        if (v === 6) {
+          newValue += value[v] + ".";
+        } else {
+          newValue += value[v];
+        }
+      }
+
+      setCpf(newValue);
+    } else if (value.length === 12) {
+      for (let v = 0; v < value.length; v++) {
+        if (v === 10) {
+          newValue += value[v] + "-";
+        } else {
+          newValue += value[v];
+        }
+      }
+
+      setCpf(newValue);
+    } else {
+      setCpf(value);
+    }
+
+    return;
   }
 
   return (
@@ -442,7 +492,7 @@ export default function Register() {
                 onChangeText={(value) => validateCpf(value)}
                 inputMode="numeric"
                 placeholder="Digite o seu CPF"
-                maxLength={11}
+                maxLength={14}
               />
               {cpfError !== "" && (
                 <Text style={styles.caption}>{cpfError}</Text>
