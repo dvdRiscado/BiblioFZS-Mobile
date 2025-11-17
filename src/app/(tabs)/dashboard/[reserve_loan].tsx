@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 
 import CardBookMedium from "@/src/Components/cardBookMedium";
 import CardBookReMedium from "@/src/Components/cardBookReMedium";
@@ -8,6 +9,15 @@ import OptionSection from "@/src/Components/optionSection";
 
 export default function Historic() {
   const [section, setSection] = useState("reserva");
+
+  const selected = useLocalSearchParams();
+
+  useEffect(() => {
+    if (!selected?.reserve_loan) return;
+    const val = String(selected.reserve_loan);
+    if (val === "emprestimo") setSection("emprestimo");
+    else if (val === "reserva") setSection("reserva");
+  }, [selected?.reserve_loan]);
 
   const bookData = [
     {
