@@ -6,15 +6,17 @@ type Props = {
   change: Function;
   items: any;
   text: string;
+  value: string;
 };
 
-export function InputPickerSelect({ change, items, text }: Props) {
+export function InputPickerSelect({ change, items, text, value }: Props) {
   return (
     // Remova o <View style={styles.container}> daqui, pois
     // vamos aplicar o estilo de contêiner diretamente no RNPickerSelect
     <RNPickerSelect
       onValueChange={(value) => change(value)}
       items={items}
+      value={value}
       placeholder={{
         label: text, // O texto placeholder que você passa
         value: "",

@@ -1,24 +1,35 @@
 import DateTimePicker, {
   DateTimePickerAndroid,
 } from "@react-native-community/datetimepicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 
 type Props = {
   change: Function;
+  value: string;
 };
 
-export default function InputDatePicker({ change }: Props) {
+export default function InputDatePicker({ change, value }: Props) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (value) {
+      setDate(new Date(value));
+    }
+  }, [value]);
 
   // mínimo: primeiro dia do ano de 10 anos atrás
   const minDate = new Date(new Date().getFullYear() - 10, 0, 1);
 
+  // máximo: último dia do ano de 10 anos à frente
+  const maxDate = new Date(new Date().getFullYear() + 10, 11, 31);
+
   function onChange(event: any, selectedDate?: Date) {
     const current = selectedDate || date;
-    const clamped = current < minDate ? minDate : current;
+    const clamped =
+      current < minDate ? minDate : current > maxDate ? maxDate : current;
     setOpen(Platform.OS === "ios");
     setDate(clamped);
     change(date);
@@ -31,7 +42,12 @@ export default function InputDatePicker({ change }: Props) {
         onChange: (event, selectedDate) => {
           if (event?.type === "dismissed") return;
           if (selectedDate) {
-            const chosen = selectedDate < minDate ? minDate : selectedDate;
+            const chosen =
+              selectedDate < minDate
+                ? minDate
+                : selectedDate > maxDate
+                ? maxDate
+                : selectedDate;
             setDate(chosen);
             change(date);
           }
@@ -39,6 +55,7 @@ export default function InputDatePicker({ change }: Props) {
         mode: "date",
         display: "calendar",
         minimumDate: minDate,
+        maximumDate: maxDate,
       });
     } else {
       setOpen(true);
@@ -58,6 +75,7 @@ export default function InputDatePicker({ change }: Props) {
           display="spinner"
           onChange={onChange}
           minimumDate={minDate}
+          maximumDate={maxDate}
         />
       )}
     </View>
