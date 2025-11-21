@@ -11,21 +11,50 @@ export default function Layout() {
         name="register"
         options={{
           title: "Cadastro",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "semibold",
+            fontSize: 20,
+          },
           headerShadowVisible: false,
         }}
       />
       <Stack.Screen
         name="login"
-        options={{ title: "Login", headerShadowVisible: false }}
+        options={{
+          title: "Login",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "semibold",
+            fontSize: 20,
+          },
+          headerShadowVisible: false,
+        }}
       />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
         name="detalheslivro"
-        options={{ title: "Detalhes do Livro", headerShadowVisible: false }}
+        options={{
+          title: "Detalhes do Livro",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "semibold",
+            fontSize: 20,
+          },
+          headerShadowVisible: false,
+        }}
       />
       <Stack.Screen
         name="editprofile"
-        options={{ title: "Editar perfil", headerShadowVisible: false }}
+        options={{
+          title: "Editar perfil",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "semibold",
+            fontSize: 20,
+          },
+          headerShadowVisible: false,
+        }}
       />
       <Stack.Screen
         name="favorites"

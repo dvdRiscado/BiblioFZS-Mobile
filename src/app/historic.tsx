@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import CardBookHisMedium from "../Components/cardBookHisMedium";
 
 const bookData = [
@@ -40,8 +40,8 @@ export default function Favorites() {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <CardBookHisMedium book={bookData[0]} onPress={goToDetalhesLivro} />
-        <CardBookHisMedium book={bookData[1]} onPress={goToDetalhesLivro} />
+        <CardBookHisMedium book={bookData[0]} clicked={goToDetalhesLivro} />
+        <CardBookHisMedium book={bookData[1]} clicked={goToDetalhesLivro} />
       </ScrollView>
     </View>
   );

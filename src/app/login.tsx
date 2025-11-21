@@ -2,7 +2,13 @@ import { Button } from "@/src/Components/button";
 import { InputIconText } from "@/src/Components/inputIconText";
 import { router } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { InputIconPassword } from "../Components/inputIconPassword";
 
 export default function Login() {
@@ -50,7 +56,11 @@ export default function Login() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
+    >
       <View>
         <Text style={styles.titulo}>Bem Vindo!</Text>
         <Text style={styles.subtitulo}>Faça login para continuar</Text>
@@ -75,7 +85,7 @@ export default function Login() {
         <Text>Esqueceu a senha?</Text>
       </View>
       <Button text="Entrar >" onPress={goDashboard} />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

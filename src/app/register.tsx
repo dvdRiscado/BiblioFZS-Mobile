@@ -1,6 +1,13 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import BtnBack from "../Components/btnBack";
 import { Button } from "../Components/button";
 import InputDatePicker from "../Components/inputDatePicker";
@@ -8,47 +15,34 @@ import { InputPassword } from "../Components/inputPassword";
 import { InputPickerSelect } from "../Components/inputPickerSelect";
 import InputText from "../Components/inputText";
 
+import {
+  decideListCurso,
+  estados,
+  instituicoes,
+  periodos,
+  validateBairro,
+  validateCep,
+  validateCidade,
+  validateConfirmPassword,
+  validateCpf,
+  validateCurso,
+  validateEmail,
+  validateEstado,
+  validateFimCurso,
+  validateInicioCurso,
+  validateInstituicao,
+  validateLastname,
+  validateName,
+  validateNumber,
+  validatePassword,
+  validatePeriodo,
+  validateRaRm,
+  validateRua,
+  validateTelephone,
+} from "../Components/funValidate";
+
 export default function Register() {
   const [section, setSection] = useState(0);
-
-  const estados = [
-    { label: "AC", value: "AC" },
-    { label: "AL", value: "AL" },
-    { label: "AP", value: "AP" },
-    { label: "AM", value: "AM" },
-    { label: "BA", value: "BA" },
-    { label: "CE", value: "CE" },
-    { label: "DF", value: "DF" },
-    { label: "ES", value: "ES" },
-    { label: "GO", value: "GO" },
-    { label: "MA", value: "MA" },
-    { label: "MT", value: "MT" },
-    { label: "MS", value: "MS" },
-    { label: "MG", value: "MG" },
-    { label: "PA", value: "PA" },
-    { label: "PB", value: "PB" },
-    { label: "PR", value: "PR" },
-    { label: "PE", value: "PE" },
-    { label: "PI", value: "PI" },
-    { label: "RJ", value: "RJ" },
-    { label: "RN", value: "RN" },
-    { label: "RS", value: "RS" },
-    { label: "RO", value: "RO" },
-    { label: "RR", value: "RR" },
-    { label: "SC", value: "SC" },
-    { label: "SP", value: "SP" },
-    { label: "SE", value: "SE" },
-    { label: "TO", value: "TO" },
-  ];
-
-  const instituicoes = [
-    { label: "Fatec Zona Sul", value: "Fatec Zona Sul" },
-    {
-      label: "Etec Carolina Carinhato Sampaio",
-      value: "Etec Carolina Carinhato Sampaio",
-    },
-    { label: "Outra Instituição", value: "Outra Instituição" },
-  ];
 
   function upSection() {
     if (section === 0) {
@@ -66,11 +60,11 @@ export default function Register() {
       ) {
         setSection(section + 1);
       } else {
-        validateName(name);
-        validateLastname(lastname);
-        validateCpf(cpf);
-        validateEmail(email);
-        validateTelephone(telephone);
+        validateName(name, setName, setNameError);
+        validateLastname(lastname, setLastname, setLastnameError);
+        validateCpf(cpf, setCpf, setCpfError);
+        validateEmail(email, setEmail, setEmailError);
+        validateTelephone(telephone, setTelephone, setTelephoneError);
       }
     } else if (section === 1) {
       if (
@@ -89,12 +83,12 @@ export default function Register() {
       ) {
         setSection(section + 1);
       } else {
-        validateCep(cep);
-        validateCidade(cidade);
-        validateEstado(estado);
-        validateBairro(bairro);
-        validateRua(rua);
-        validateNumber(number);
+        validateCep(cep, setCep, setCepError);
+        validateCidade(cidade, setCidade, setCidadeError);
+        validateEstado(estado, setEstado, setEstadoError);
+        validateBairro(bairro, setBairro, setBairroError);
+        validateRua(rua, setRua, setRuaError);
+        validateNumber(number, setNumber, setNumberError);
       }
     } else if (section === 2) {
       if (
@@ -103,19 +97,22 @@ export default function Register() {
         curso !== "" &&
         inicioCurso !== "" &&
         fimCurso !== "" &&
+        periodo !== "" &&
         instituicaoError === "" &&
         raRmError === "" &&
         cursoError === "" &&
+        periodoError === "" &&
         inicioCursoError === "" &&
         fimCursoError === ""
       ) {
         setSection(section + 1);
       } else {
-        validateInstituicao(instituicao);
-        validateRaRm(raRm);
-        validateCurso(curso);
-        validateInicioCurso(inicioCurso);
-        validateFimCurso(fimCurso);
+        validateInstituicao(instituicao, setInstituicao, setInstituicaoError);
+        validateRaRm(raRm, setRaRm, setRaRmError);
+        validateCurso(curso, setCurso, setCursoError);
+        validatePeriodo(periodo, setPeriodo, setPeriodoError);
+        validateInicioCurso(inicioCurso, setInicioCurso, setInicioCursoError);
+        validateFimCurso(fimCurso, setFimCurso, setFimCursoError);
       }
     } else if (section === 3) {
       if (
@@ -126,8 +123,13 @@ export default function Register() {
       ) {
         router.push("/(tabs)/dashboard");
       } else {
-        validatePassword(password);
-        validateConfirmPassword(confirmPassword);
+        validatePassword(password, setPassword, setPasswordError);
+        validateConfirmPassword(
+          confirmPassword,
+          password,
+          setConfirmPassword,
+          setConfirmPasswordError
+        );
       }
     }
   }
@@ -158,6 +160,7 @@ export default function Register() {
   const [curso, setCurso] = useState("");
   const [inicioCurso, setInicioCurso] = useState("");
   const [fimCurso, setFimCurso] = useState("");
+  const [periodo, setPeriodo] = useState("");
 
   // Register: Senha
   const [password, setPassword] = useState("");
@@ -180,277 +183,16 @@ export default function Register() {
   const [cursoError, setCursoError] = useState("");
   const [inicioCursoError, setInicioCursoError] = useState("");
   const [fimCursoError, setFimCursoError] = useState("");
+  const [periodoError, setPeriodoError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-  // Funções de Validação
-  function validateName(text: string) {
-    setName(text);
-    if (text === "") {
-      setNameError("O nome é obrigatório");
-    } else if (text.length < 3) {
-      setNameError("O nome deve ter pelo menos 3 caracteres");
-    } else {
-      setNameError("");
-    }
-  }
-
-  function validateLastname(text: string) {
-    setLastname(text);
-    if (text === "") {
-      setLastnameError("O sobrenome é obrigatório");
-    } else if (text.length < 3) {
-      setLastnameError("O sobrenome deve ter pelo menos 3 caracteres");
-    } else {
-      setLastnameError("");
-    }
-  }
-
-  function validateCpf(text: string) {
-    formatCpf(text);
-    if (text === "") {
-      setCpfError("O Cpf é obrigatório");
-    } else if (text.length < 13) {
-      setCpfError("Digite um cpf válido");
-    } else {
-      setCpfError("");
-    }
-  }
-
-  function validateEmail(text: string) {
-    setEmail(text);
-    if (text === "") {
-      setEmailError("O email é obrigatório");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
-      setEmailError("Digite um email válido");
-    } else {
-      setEmailError("");
-    }
-  }
-
-  function validateTelephone(text: string) {
-    setTelephone(text);
-    if (text === "") {
-      setTelephoneError("O telefone é obrigatório");
-    } else if (text.length < 10) {
-      setTelephoneError("Digite um telefone válido");
-    } else {
-      setTelephoneError("");
-    }
-  }
-
-  function validateCep(text: string) {
-    setCep(text);
-    if (text === "") {
-      setCepError("O CEP é obrigatório");
-    } else if (text.length < 8) {
-      setCepError("Digite um CEP válido");
-    } else {
-      setCepError("");
-    }
-  }
-
-  function validateCidade(text: string) {
-    setCidade(text);
-    if (text === "") {
-      setCidadeError("A cidade é obrigatória");
-    } else if (text.length < 3) {
-      setCidadeError("A cidade deve ter pelo menos 3 caracteres");
-    } else {
-      setCidadeError("");
-    }
-  }
-
-  function validateEstado(text: string) {
-    setEstado(text);
-    if (text === "") {
-      setEstadoError("O estado é obrigatório");
-    } else {
-      setEstadoError("");
-    }
-  }
-
-  function validateBairro(text: string) {
-    setBairro(text);
-    if (text === "") {
-      setBairroError("O bairro é obrigatório");
-    } else if (text.length < 3) {
-      setBairroError("O bairro deve ter pelo menos 3 caracteres");
-    } else {
-      setBairroError("");
-    }
-  }
-
-  function validateRua(text: string) {
-    setRua(text);
-    if (text === "") {
-      setRuaError("A rua é obrigatória");
-    } else if (text.length < 3) {
-      setRuaError("A rua deve ter pelo menos 3 caracteres");
-    } else {
-      setRuaError("");
-    }
-  }
-
-  function validateNumber(text: string) {
-    setNumber(text);
-    if (text === "") {
-      setNumberError("O número é obrigatório");
-    } else {
-      setNumberError("");
-    }
-  }
-
-  function validateRaRm(text: string) {
-    setRaRm(text);
-    if (text === "") {
-      setRaRmError("O RA/RM é obrigatório");
-    } else if (text.length < 13) {
-      setRaRmError("O RA/RM deve ter 13 caracteres");
-    } else {
-      setRaRmError("");
-    }
-  }
-
-  function validateInstituicao(value: string) {
-    setInstituicao(value);
-    if (value === "") {
-      setInstituicaoError("A instituição é obrigatória");
-    } else {
-      setInstituicaoError("");
-    }
-  }
-
-  function validateCurso(text: string) {
-    setCurso(text);
-    if (text === "") {
-      setCursoError("O curso é obrigatório");
-    } else if (text.length < 3) {
-      setCursoError("O curso deve ter pelo menos 3 caracteres");
-    } else {
-      setCursoError("");
-    }
-  }
-
-  function validateInicioCurso(text: string) {
-    setInicioCurso(text);
-    if (text === "") {
-      setInicioCursoError("A data de início é obrigatória");
-    } else {
-      setInicioCursoError("");
-    }
-  }
-
-  function validateFimCurso(text: string) {
-    setFimCurso(text);
-    if (text === "") {
-      setFimCursoError("A data de término é obrigatória");
-    } else {
-      setFimCursoError("");
-    }
-  }
-
-  function validatePassword(text: string) {
-    setPassword(text);
-    if (text === "") {
-      setPasswordError("A senha é obrigatória");
-    } else if (text.length < 8) {
-      setPasswordError("A senha deve ter pelo menos 8 caracteres");
-    } else {
-      setPasswordError("");
-    }
-  }
-
-  function validateConfirmPassword(text: string) {
-    setConfirmPassword(text);
-    if (text === "") {
-      setConfirmPasswordError("A confirmação de senha é obrigatória");
-    } else if (text !== password) {
-      setConfirmPasswordError("As senhas não correspondem");
-    } else {
-      setConfirmPasswordError("");
-    }
-  }
-
-  // Funções dos Inputs Picker Select
-  function decideListCurso(instituicaoValue: string) {
-    if (instituicaoValue === "Fatec Zona Sul") {
-      return [
-        {
-          label: "Análise e Desenvolvimento de Sistemas",
-          value: "Análise e Desenvolvimento de Sistemas",
-        },
-        {
-          label: "Desenvolvimento de Software Multiplataforma",
-          value: "Desenvolvimento de Software Multiplataforma",
-        },
-        { label: "Gestão Empresarial", value: "Gestão Empresarial" },
-        { label: "Logística", value: "Logística" },
-      ];
-    } else if (instituicaoValue === "Etec Carolina Carinhato Sampaio") {
-      return [
-        { label: "Administração", value: "Administração" },
-        { label: "Eletrônica", value: "Eletrônica" },
-        { label: "Enfermagem", value: "Enfermagem" },
-        { label: "Recursos Humanos", value: "Recursos Humanos" },
-      ];
-    } else {
-      return [];
-    }
-  }
-
-  // Funções de formatação de texto - CPF
-  function formatCpf(value: string) {
-    let newValue = "";
-
-    if (value[value.length - 1] === "." || value[value.length - 1] === "-") {
-      for (let v = 0; v <= value.length - 2; v++) {
-        newValue += value[v];
-      }
-
-      setCpf(newValue);
-      return;
-    }
-
-    if (value.length === 4) {
-      for (let v = 0; v < value.length; v++) {
-        if (v === 2) {
-          newValue += value[v] + ".";
-        } else {
-          newValue += value[v];
-        }
-      }
-
-      setCpf(newValue);
-    } else if (value.length === 8) {
-      for (let v = 0; v < value.length; v++) {
-        if (v === 6) {
-          newValue += value[v] + ".";
-        } else {
-          newValue += value[v];
-        }
-      }
-
-      setCpf(newValue);
-    } else if (value.length === 12) {
-      for (let v = 0; v < value.length; v++) {
-        if (v === 10) {
-          newValue += value[v] + "-";
-        } else {
-          newValue += value[v];
-        }
-      }
-
-      setCpf(newValue);
-    } else {
-      setCpf(value);
-    }
-
-    return;
-  }
-
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
+    >
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -467,7 +209,9 @@ export default function Register() {
               <Text style={styles.label}>Nome</Text>
               <InputText
                 value={name}
-                onChangeText={(value) => validateName(value)}
+                onChangeText={(value) =>
+                  validateName(value, setName, setNameError)
+                }
                 inputMode="text"
                 placeholder="Digite o seu nome"
               />
@@ -478,7 +222,9 @@ export default function Register() {
               <Text style={styles.label}>Sobrenome</Text>
               <InputText
                 value={lastname}
-                onChangeText={(value) => validateLastname(value)}
+                onChangeText={(value) =>
+                  validateLastname(value, setLastname, setLastnameError)
+                }
                 inputMode="text"
                 placeholder="Digite o seu sobrenome"
               />
@@ -489,7 +235,9 @@ export default function Register() {
               <Text style={styles.label}>CPF</Text>
               <InputText
                 value={cpf}
-                onChangeText={(value) => validateCpf(value)}
+                onChangeText={(value) =>
+                  validateCpf(value, setCpf, setCpfError)
+                }
                 inputMode="numeric"
                 placeholder="Digite o seu CPF"
                 maxLength={14}
@@ -501,7 +249,9 @@ export default function Register() {
               <Text style={styles.label}>E-mail</Text>
               <InputText
                 value={email}
-                onChangeText={(value) => validateEmail(value)}
+                onChangeText={(value) =>
+                  validateEmail(value, setEmail, setEmailError)
+                }
                 inputMode="email"
                 placeholder="Digite o seu e-mail"
               />
@@ -512,10 +262,12 @@ export default function Register() {
               <Text style={styles.label}>Telefone</Text>
               <InputText
                 value={telephone}
-                onChangeText={(value) => validateTelephone(value)}
+                onChangeText={(value) =>
+                  validateTelephone(value, setTelephone, setTelephoneError)
+                }
                 inputMode="tel"
                 placeholder="Digite o seu telefone"
-                maxLength={11}
+                maxLength={14}
               />
               {telephoneError !== "" && (
                 <Text style={styles.caption}>{telephoneError}</Text>
@@ -537,10 +289,12 @@ export default function Register() {
               <Text style={styles.label}>CEP</Text>
               <InputText
                 value={cep}
-                onChangeText={(value) => validateCep(value)}
+                onChangeText={(value) =>
+                  validateCep(value, setCep, setCepError)
+                }
                 inputMode="numeric"
                 placeholder="Digite o seu CEP"
-                maxLength={8}
+                maxLength={9}
               />
               {cepError !== "" && (
                 <Text style={styles.caption}>{cepError}</Text>
@@ -551,7 +305,9 @@ export default function Register() {
                   <Text style={styles.label}>Cidade</Text>
                   <InputText
                     value={cidade}
-                    onChangeText={(value) => validateCidade(value)}
+                    onChangeText={(value) =>
+                      validateCidade(value, setCidade, setCidadeError)
+                    }
                     inputMode="text"
                     placeholder="Digite sua cidade"
                   />
@@ -563,9 +319,12 @@ export default function Register() {
                 <View style={styles.ufContainer}>
                   <Text style={styles.label}>Estado</Text>
                   <InputPickerSelect
-                    change={validateEstado}
+                    change={(value: string) =>
+                      validateEstado(value, setEstado, setEstadoError)
+                    }
                     items={estados}
                     text={"Escolha seu UF"}
+                    value={estado}
                   />
                   {estadoError !== "" && (
                     <Text style={styles.caption}>{estadoError}</Text>
@@ -575,7 +334,9 @@ export default function Register() {
               <Text style={styles.label}>Bairro</Text>
               <InputText
                 value={bairro}
-                onChangeText={(value) => validateBairro(value)}
+                onChangeText={(value) =>
+                  validateBairro(value, setBairro, setBairroError)
+                }
                 inputMode="text"
                 placeholder="Digite seu bairro"
               />
@@ -586,7 +347,9 @@ export default function Register() {
               <Text style={styles.label}>Rua</Text>
               <InputText
                 value={rua}
-                onChangeText={(value) => validateRua(value)}
+                onChangeText={(value) =>
+                  validateRua(value, setRua, setRuaError)
+                }
                 inputMode="text"
                 placeholder="Digite sua rua"
               />
@@ -599,7 +362,9 @@ export default function Register() {
                   <Text style={styles.label}>Número</Text>
                   <InputText
                     value={number}
-                    onChangeText={(value) => validateNumber(value)}
+                    onChangeText={(value) =>
+                      validateNumber(value, setNumber, setNumberError)
+                    }
                     inputMode="numeric"
                     placeholder="Nº"
                   />
@@ -640,9 +405,16 @@ export default function Register() {
             <View>
               <Text style={styles.label}>Instituição</Text>
               <InputPickerSelect
-                change={validateInstituicao}
+                change={(value: string) =>
+                  validateInstituicao(
+                    value,
+                    setInstituicao,
+                    setInstituicaoError
+                  )
+                }
                 items={instituicoes}
                 text="Escolha sua instituição"
+                value={instituicao}
               />
               {instituicaoError !== "" && (
                 <Text style={styles.caption}>{instituicaoError}</Text>
@@ -651,7 +423,9 @@ export default function Register() {
               <Text style={styles.label}>RA/RM</Text>
               <InputText
                 value={raRm}
-                onChangeText={(value) => validateRaRm(value)}
+                onChangeText={(value) =>
+                  validateRaRm(value, setRaRm, setRaRmError)
+                }
                 inputMode="numeric"
                 placeholder="Digite seu RA/RM"
                 maxLength={13}
@@ -662,22 +436,52 @@ export default function Register() {
 
               <Text style={styles.label}>Curso</Text>
               <InputPickerSelect
-                change={validateCurso}
+                change={(value: string) =>
+                  validateCurso(value, setCurso, setCursoError)
+                }
                 items={decideListCurso(instituicao)}
                 text="Escolha seu curso"
+                value={curso}
               />
               {cursoError !== "" && (
                 <Text style={styles.caption}>{cursoError}</Text>
               )}
 
+              <Text style={styles.label}>Período</Text>
+              <InputPickerSelect
+                change={(value: string) =>
+                  validatePeriodo(value, setPeriodo, setPeriodoError)
+                }
+                items={periodos}
+                text="Escolha o período"
+                value={periodo}
+              />
+              {periodoError !== "" && (
+                <Text style={styles.caption}>{periodoError}</Text>
+              )}
+
               <Text style={styles.label}>Início do Curso</Text>
-              <InputDatePicker change={validateInicioCurso} />
+              <InputDatePicker
+                change={(value: string) =>
+                  validateInicioCurso(
+                    value,
+                    setInicioCurso,
+                    setInicioCursoError
+                  )
+                }
+                value={inicioCurso}
+              />
               {inicioCursoError !== "" && (
                 <Text style={styles.caption}>{inicioCursoError}</Text>
               )}
 
               <Text style={styles.label}>Fim do Curso</Text>
-              <InputDatePicker change={validateFimCurso} />
+              <InputDatePicker
+                change={(value: string) =>
+                  validateFimCurso(value, setFimCurso, setFimCursoError)
+                }
+                value={fimCurso}
+              />
               {fimCursoError !== "" && (
                 <Text style={styles.caption}>{fimCursoError}</Text>
               )}
@@ -705,10 +509,10 @@ export default function Register() {
               <InputPassword
                 type="password"
                 value={password}
-                onChangeText={(value) => validatePassword(value)}
-                inputMode="text"
+                onChangeText={(value) =>
+                  validatePassword(value, setPassword, setPasswordError)
+                }
                 placeholder="Digite sua senha"
-                secureTextEntry
               />
               {passwordError !== "" && (
                 <Text style={styles.caption}>{passwordError}</Text>
@@ -718,10 +522,15 @@ export default function Register() {
               <InputPassword
                 type="password"
                 value={confirmPassword}
-                onChangeText={(value) => validateConfirmPassword(value)}
-                inputMode="text"
+                onChangeText={(value) =>
+                  validateConfirmPassword(
+                    value,
+                    password,
+                    setConfirmPassword,
+                    setConfirmPasswordError
+                  )
+                }
                 placeholder="Confirme sua senha"
-                secureTextEntry
               />
               {confirmPasswordError !== "" && (
                 <Text style={styles.caption}>{confirmPasswordError}</Text>
@@ -738,7 +547,7 @@ export default function Register() {
           </View>
         )}
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
