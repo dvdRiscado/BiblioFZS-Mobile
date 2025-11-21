@@ -1,6 +1,6 @@
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
 
 import CardBookMedium from "@/src/Components/cardBookMedium";
 import CardBookReMedium from "@/src/Components/cardBookReMedium";
@@ -11,6 +11,10 @@ export default function Historic() {
   const [section, setSection] = useState("reserva");
 
   const selected = useLocalSearchParams();
+
+  function goDetalhesLivro() {
+    router.navigate("/detalheslivro");
+  }
 
   useEffect(() => {
     if (!selected?.reserve_loan) return;
@@ -82,12 +86,12 @@ export default function Historic() {
 
         {section === "emprestimo" ? (
           <View style={styles.booksContainer}>
-            <CardBookMedium book={bookData[0]} />
-            <CardBookMedium book={bookData[1]} />
+            <CardBookMedium book={bookData[0]} clicked={goDetalhesLivro} />
+            <CardBookMedium book={bookData[1]} clicked={goDetalhesLivro} />
           </View>
         ) : (
           <View style={styles.booksContainer}>
-            <CardBookReMedium book={bookData[2]} />
+            <CardBookReMedium book={bookData[2]} clicked={goDetalhesLivro} />
           </View>
         )}
       </ScrollView>

@@ -45,7 +45,6 @@ export default function Home() {
   function goDetalhesLivro() {
     router.navigate("/detalheslivro");
   }
-  ("");
 
   const animationStyle = useCallback((value) => {
     "worklet";
@@ -107,7 +106,7 @@ export default function Home() {
               );
               return (
                 <Animated.View style={animatedStyle}>
-                  <CardBookLarge book={item} />
+                  <CardBookLarge book={item} clicked={goDetalhesLivro} />
                 </Animated.View>
               );
             }}
