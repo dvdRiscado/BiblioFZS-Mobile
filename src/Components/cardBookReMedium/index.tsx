@@ -1,14 +1,28 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  GestureResponderEvent,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { styles } from "./style";
 
-export default function CardBookReMedium({ book }: any) {
+type CardBookReMediumProps = {
+  book: any;
+  clicked: (event: GestureResponderEvent) => void;
+};
+
+export default function CardBookReMedium({
+  book,
+  clicked,
+}: CardBookReMediumProps) {
   let percent = (((Number(book.day) - 7) * -1) / 7) * 100;
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <TouchableOpacity style={styles.imageContainer} onPress={clicked}>
         <Image style={styles.image} source={book.uri} resizeMode="contain" />
-      </View>
+      </TouchableOpacity>
       <View style={styles.infoContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.headline}>{book.title}</Text>

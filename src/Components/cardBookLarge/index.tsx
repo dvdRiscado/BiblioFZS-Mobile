@@ -1,4 +1,10 @@
-import { Image, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
+import {
+  GestureResponderEvent,
+  Image,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -6,16 +12,21 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import RatingStars from "../ratingStars";
 import { styles } from "./style";
 
-export default function CardBookLarge({ book }: any) {
-  function onPressTest() {
-    console.log("buga??");
+type CardBookLargeProps = {
+  book: any;
+  clicked: (event: GestureResponderEvent) => void;
+};
+
+export default function CardBookLarge({ book, clicked }: CardBookLargeProps) {
+  function goDetalhesLivro() {
+    router.navigate("/detalheslivro");
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={onPressTest}
+          onPress={clicked}
           style={styles.imageWrapper}
           activeOpacity={0.7}
         >
