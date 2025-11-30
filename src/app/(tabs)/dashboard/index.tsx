@@ -1,9 +1,9 @@
+import { UsuarioContext, UsuarioProvider } from "@/context/UsuarioContext";
 import { router } from "expo-router";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { Extrapolate, interpolate } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
-
 // Componentes
 import CardBookLarge from "@/src/Components/cardBookLarge";
 import CardBookSmall from "@/src/Components/cardBookSmall";
@@ -38,7 +38,7 @@ const bookData = [
 
 export default function Home() {
   const width = Dimensions.get("window").width;
-
+  const ctx = useContext(UsuarioContext);
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
 
@@ -67,71 +67,77 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(">>> USER ATUALIZADO NA TELA:", ctx?.user);
+  }, [ctx?.user]);
+
   return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <Header />
-        <Text style={styles.headline}>Bem-Vindo, David!</Text>
-        <InputSearch />
-        <View style={styles.carrossel}>
-          <Text style={styles.titleWhite}>Livros para você!</Text>
-          <Text style={styles.titleBook}>
-            {bookData[activeIndex]?.title || "N/A"}
+    <UsuarioProvider>
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <Header />
+          <Text style={styles.headline}>Bem-Vindo, {ctx!.user!.nome}!</Text>
+          <InputSearch />
+          <View style={styles.carrossel}>
+            <Text style={styles.titleWhite}>Livros para você!</Text>
+            <Text style={styles.titleBook}>
+              {bookData[activeIndex]?.title || "N/A"}
+            </Text>
+            <Text style={styles.textWhite}>
+              {bookData[activeIndex]?.author || "N/A"}
+            </Text>
+            <Carousel
+              loop
+              width={width}
+              height={width - 55}
+              data={bookData}
+              autoPlay={true}
+              autoPlayInterval={5000}
+              scrollAnimationDuration={500}
+              mode="parallax"
+              modeConfig={{
+                parallaxScrollingScale: 0.9,
+                parallaxScrollingOffset: 190,
+              }}
+              onSnapToItem={(index) => setActiveIndex(index)}
+              pagingEnabled={true}
+              snapEnabled={true}
+              renderItem={({ item, index }) => {
+                // Passamos a função animationStyle para o Animated.View
+                const animatedStyle = animationStyle(
+                  carouselRef.current?.getCurrentProgress?.() - index || 0
+                );
+                return (
+                  <Animated.View style={animatedStyle}>
+                    <CardBookLarge book={item} />
+                  </Animated.View>
+                );
+              }}
+            />
+          </View>
+          <Text style={[styles.title, { marginBottom: "2%" }]}>
+            Outras Sugestões!
           </Text>
-          <Text style={styles.textWhite}>
-            {bookData[activeIndex]?.author || "N/A"}
-          </Text>
-          <Carousel
-            loop
-            width={width}
-            height={width - 55}
-            data={bookData}
-            autoPlay={true}
-            autoPlayInterval={5000}
-            scrollAnimationDuration={500}
-            mode="parallax"
-            modeConfig={{
-              parallaxScrollingScale: 0.9,
-              parallaxScrollingOffset: 190,
-            }}
-            onSnapToItem={(index) => setActiveIndex(index)}
-            pagingEnabled={true}
-            snapEnabled={true}
-            renderItem={({ item, index }) => {
-              // Passamos a função animationStyle para o Animated.View
-              const animatedStyle = animationStyle(
-                carouselRef.current?.getCurrentProgress?.() - index || 0
-              );
-              return (
-                <Animated.View style={animatedStyle}>
-                  <CardBookLarge book={item} />
-                </Animated.View>
-              );
-            }}
-          />
-        </View>
-        <Text style={[styles.title, { marginBottom: "2%" }]}>
-          Outras Sugestões!
-        </Text>
-        <View style={styles.suggestion}>
-          <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
+          <View style={styles.suggestion}>
+            <View style={styles.row}>
+              <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
+              <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
+            </View>
+            <View style={styles.row}>
+              <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
+              <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
+            </View>
+            <View style={styles.row}>
+              <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
+              <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
+            </View>
           </View>
-          <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
-          </View>
-          <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </UsuarioProvider>
   );
 }
 

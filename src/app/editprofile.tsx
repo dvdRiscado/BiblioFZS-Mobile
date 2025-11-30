@@ -1,5 +1,8 @@
+import { UsuarioContext } from "@/context/UsuarioContext";
+import { useUser } from "@/hooks/useUser";
 import InputText from "@/src/Components/inputText";
-import { useState } from "react";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useContext, useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -12,13 +15,29 @@ import {
 } from "react-native";
 import { Button } from "../Components/button";
 
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-
 export default function EditProfile() {
-  const [name, setName] = useState("David");
-  const [lastname, setLastName] = useState("Vasconcelos Torquato");
-  const [email, setEmail] = useState("david.torquato@fatec.sp.gov.br");
-  const [number, setNumber] = useState("(11)94002-8922");
+  const { atualizarUsuario } = useUser();
+  const ctx = useContext(UsuarioContext);
+  const [name, setName] = useState(ctx!.user!.nome);
+  const [lastname, setLastName] = useState(ctx!.user!.sobrenome);
+  const [email, setEmail] = useState(ctx!.user!.email);
+  const [msg, setMsg] = useState("");
+  // const [number, setNumber] = useState(ctx!.user!.tel);
+
+  const updateUser = () => {
+    try {
+      const formDados = {
+        nome: name,
+        sobrenome: lastname,
+        email: email,
+      };
+      atualizarUsuario(formDados);
+      setMsg(`Aluno atualizado com sucesso!`);
+    } catch (e) {
+      setMsg(`Erro na atualização do aluno: ${e}`);
+    }
+    // console.log(ctx!.token!, formDados);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -61,14 +80,17 @@ export default function EditProfile() {
             inputMode="email"
             onChangeText={(value) => setEmail(value)}
           />
-          <Text style={styles.label}>Telefone</Text>
+          {/* <Text style={styles.label}>Telefone</Text>
           <InputText
             value={number}
             onChangeText={(value) => setNumber(value)}
             inputMode="tel"
-          />
+          /> */}
         </View>
-        <Button text="Salvar Alterações" onPress={console.log("clicado")} />
+        <Button text="Salvar Alterações" onPress={updateUser} />
+        <View style={styles.msgView}>
+          <Text style={styles.msg}>{msg}</Text>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -122,5 +144,16 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     fontSize: 16,
+  },
+  msgView: {
+    width: "100%",
+    marginTop: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  msg: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "green",
   },
 });
