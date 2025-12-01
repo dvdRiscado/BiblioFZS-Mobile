@@ -1,3 +1,4 @@
+import { useUser } from "@/hooks/useUser";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
@@ -10,10 +11,7 @@ import {
 } from "react-native";
 import BtnBack from "../Components/btnBack";
 import { Button } from "../Components/button";
-import InputDatePicker from "../Components/inputDatePicker";
 import { InputPassword } from "../Components/inputPassword";
-import { InputPickerSelect } from "../Components/inputPickerSelect";
-import InputText from "../Components/inputText";
 
 import {
   decideListCurso,
@@ -40,9 +38,27 @@ import {
   validateRua,
   validateTelephone,
 } from "../Components/funValidate";
+import InputDatePicker from "../Components/inputDatePicker";
+import { InputPickerSelect } from "../Components/inputPickerSelect";
+import InputText from "../Components/inputText";
 
 export default function Register() {
   const [section, setSection] = useState(0);
+
+  const { registrarAluno } = useUser();
+  const registrarUser = () => {
+    const formDados = {
+      nome: name,
+      sobrenome: lastname,
+      email: email,
+      cpf: cpf,
+      // cep: cep,
+      // complemento: complemento,
+      password: password,
+    };
+    // console.log(formDados);
+    registrarAluno(formDados);
+  };
 
   function upSection() {
     if (section === 0) {
@@ -114,7 +130,7 @@ export default function Register() {
         validateInicioCurso(inicioCurso, setInicioCurso, setInicioCursoError);
         validateFimCurso(fimCurso, setFimCurso, setFimCursoError);
       }
-    } else if (section === 3) {
+    } else if (section === 1) {
       if (
         password !== "" &&
         confirmPassword !== "" &&
@@ -122,6 +138,8 @@ export default function Register() {
         confirmPasswordError === ""
       ) {
         router.push("/(tabs)/dashboard");
+        console.log("passou aqui");
+        registrarUser();
       } else {
         validatePassword(password, setPassword, setPasswordError);
         validateConfirmPassword(

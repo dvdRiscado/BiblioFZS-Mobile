@@ -1,3 +1,5 @@
+import { UsuarioProvider } from "@/context/UsuarioContext";
+import { useUser } from "@/hooks/useUser";
 import { Button } from "@/src/Components/button";
 import { InputIconText } from "@/src/Components/inputIconText";
 import { router } from "expo-router";
@@ -12,6 +14,7 @@ import {
 import { InputIconPassword } from "../Components/inputIconPassword";
 
 export default function Login() {
+  const { loginUsuario } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -39,53 +42,71 @@ export default function Login() {
     }
   }
 
-  function goDashboard() {
-    console.log("Clicado!");
+  const buscarUsusario = async () => {
+    try {
+      const formDados = new URLSearchParams();
+      formDados.append("username", email);
+      formDados.append("password", password);
+      // enviando infos para login do usuario
+      await loginUsuario(formDados);
 
+      router.push("/(tabs)/dashboard");
+    } catch (e) {
+      console.log("erro no login", e);
+    }
+  };
+
+  const handleSubmit = () => {
     if (
       emailError === "" &&
       passwordError === "" &&
       email !== "" &&
       password !== ""
     ) {
-      router.push("/(tabs)/dashboard");
+      buscarUsusario();
     } else {
       validateEmail(email);
       validatePassword(password);
     }
-  }
+  };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
-    >
-      <View>
-        <Text style={styles.titulo}>Bem Vindo!</Text>
-        <Text style={styles.subtitulo}>Faça login para continuar</Text>
-      </View>
-      <View>
-        <InputIconText
-          type="email"
-          placeholder="email@fatec.sp.gov.br"
-          onChangeText={(text) => validateEmail(text)}
-          value={email}
-        />
-        {emailError !== "" && <Text style={styles.caption}>{emailError}</Text>}
-        <InputIconPassword
-          type="password"
-          placeholder="********"
-          onChangeText={(text) => validatePassword(text)}
-          value={password}
-        />
-        {passwordError !== "" && (
-          <Text style={styles.caption}>{passwordError}</Text>
-        )}
-        <Text>Esqueceu a senha?</Text>
-      </View>
-      <Button text="Entrar >" onPress={goDashboard} />
-    </KeyboardAvoidingView>
+    <UsuarioProvider>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
+      >
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.titulo}>Bem Vindo!</Text>
+            <Text style={styles.subtitulo}>Faça login para continuar</Text>
+          </View>
+          <View>
+            <InputIconText
+              type="email"
+              placeholder="email@fatec.sp.gov.br"
+              onChangeText={(text) => validateEmail(text)}
+              value={email}
+            />
+            {emailError !== "" && (
+              <Text style={styles.caption}>{emailError}</Text>
+            )}
+            <InputIconPassword
+              type="password"
+              placeholder="********"
+              onChangeText={(text) => validatePassword(text)}
+              value={password}
+            />
+            {passwordError !== "" && (
+              <Text style={styles.caption}>{passwordError}</Text>
+            )}
+            <Text>Esqueceu a senha?</Text>
+          </View>
+          <Button text="Entrar >" onPress={() => handleSubmit()} />
+        </View>
+      </KeyboardAvoidingView>
+    </UsuarioProvider>
   );
 }
 

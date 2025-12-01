@@ -3,7 +3,7 @@ import InputDatePicker from "../Components/inputDatePicker";
 import { InputPassword } from "../Components/inputPassword";
 import { InputPickerSelect } from "../Components/inputPickerSelect";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -18,6 +18,8 @@ import { Button } from "../Components/button";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
+import { UsuarioContext } from "@/context/UsuarioContext";
+import { useUser } from "@/hooks/useUser";
 import {
   decideListCurso,
   estados,
@@ -46,10 +48,10 @@ import TxtTitle from "../Components/txtTitle";
 
 export default function EditProfile() {
   // Register: Usuário
-  const [name, setName] = useState("David");
-  const [lastname, setLastname] = useState("Vasconcelos");
+  // const [name, setName] = useState("David");
+  // const [lastname, setLastname] = useState("Vasconcelos");
   const [cpf, setCpf] = useState("123.456.789-00");
-  const [email, setEmail] = useState("exemplo@email.com");
+  // const [email, setEmail] = useState("exemplo@email.com");
   const [telephone, setTelephone] = useState("(11)91234-5678");
 
   // Register: Endereço
@@ -91,6 +93,28 @@ export default function EditProfile() {
   const [fimCursoError, setFimCursoError] = useState("");
   const [periodoError, setPeriodoError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const { atualizarUsuario } = useUser();
+  const ctx = useContext(UsuarioContext);
+  const [name, setName] = useState(ctx!.user!.nome);
+  const [lastname, setLastName] = useState(ctx!.user!.sobrenome);
+  const [email, setEmail] = useState(ctx!.user!.email);
+  const [msg, setMsg] = useState("");
+  // const [number, setNumber] = useState(ctx!.user!.tel);
+
+  const updateUser = () => {
+    try {
+      const formDados = {
+        nome: name,
+        sobrenome: lastname,
+        email: email,
+      };
+      // atualizarUsuario(formDados);
+      setMsg(`Aluno atualizado com sucesso!`);
+    } catch (e) {
+      setMsg(`Erro na atualização do aluno: ${e}`);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -134,7 +158,7 @@ export default function EditProfile() {
             <InputText
               value={lastname}
               onChangeText={(value) =>
-                validateLastname(value, setLastname, setLastnameError)
+                validateLastname(value, setLastName, setLastnameError)
               }
               inputMode="text"
               placeholder="Digite o seu sobrenome"
@@ -376,10 +400,7 @@ export default function EditProfile() {
         </View>
       </ScrollView>
       <View style={styles.compButton}>
-        <Button
-          text="Salvar Alterações"
-          onPress={() => console.log("clicado")}
-        />
+        <Button text="Salvar Alterações" onPress={updateUser} />
       </View>
     </KeyboardAvoidingView>
   );
