@@ -7,29 +7,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-const bookData = [
-  {
-    id: "1",
-    title: "Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.5,
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "2",
-    title: "Não Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.0,
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "3",
-    title: "Desisto de Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 3.5,
-    uri: require("@/assets/images/image.png"),
-  },
-];
+import { books } from "@/src/Components/objStorage";
 
 export default function Catalog() {
   const [opcaoLivro, setOpcaoLivro] = useState("livro");
@@ -38,8 +16,11 @@ export default function Catalog() {
     setOpcaoLivro(val);
   }
 
-  function goDetalhesLivro() {
-    router.navigate("/detalheslivro");
+  function goDetalhesLivro(id: string) {
+    router.push({
+      pathname: "/[detalheslivro]",
+      params: { detalheslivro: id },
+    });
   }
 
   return (
@@ -75,16 +56,34 @@ export default function Catalog() {
         </View>
         <View style={styles.suggestion}>
           <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[0].id)}
+              book={books[0]}
+            />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[1].id)}
+              book={books[1]}
+            />
           </View>
           <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[2].id)}
+              book={books[2]}
+            />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[3].id)}
+              book={books[3]}
+            />
           </View>
           <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[4].id)}
+              book={books[4]}
+            />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[5].id)}
+              book={books[5]}
+            />
           </View>
         </View>
       </ScrollView>

@@ -10,40 +10,20 @@ import CardBookSmall from "@/src/Components/cardBookSmall";
 import Header from "@/src/Components/header";
 import InputSearch from "@/src/Components/inputSearch";
 
+import { books } from "@/src/Components/objStorage";
+
 // Icones
-
-const bookData = [
-  {
-    id: "1",
-    title: "Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.5,
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "2",
-    title: "Não Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.0,
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "3",
-    title: "Desisto de Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 3.5,
-    uri: require("@/assets/images/image.png"),
-  },
-];
-
 export default function Home() {
   const width = Dimensions.get("window").width;
 
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
 
-  function goDetalhesLivro() {
-    router.navigate("/detalheslivro");
+  function goDetalhesLivro(id: string) {
+    router.push({
+      pathname: "/[detalheslivro]",
+      params: { detalheslivro: id },
+    });
   }
 
   const animationStyle = useCallback((value) => {
@@ -78,16 +58,16 @@ export default function Home() {
         <View style={styles.carrossel}>
           <Text style={styles.titleWhite}>Livros para você!</Text>
           <Text style={styles.titleBook}>
-            {bookData[activeIndex]?.title || "N/A"}
+            {books[activeIndex]?.title || "N/A"}
           </Text>
           <Text style={styles.textWhite}>
-            {bookData[activeIndex]?.author || "N/A"}
+            {books[activeIndex]?.author || "N/A"}
           </Text>
           <Carousel
             loop
             width={width}
             height={width - 55}
-            data={bookData}
+            data={books}
             autoPlay={true}
             autoPlayInterval={5000}
             scrollAnimationDuration={500}
@@ -106,7 +86,10 @@ export default function Home() {
               );
               return (
                 <Animated.View style={animatedStyle}>
-                  <CardBookLarge book={item} clicked={goDetalhesLivro} />
+                  <CardBookLarge
+                    book={item}
+                    clicked={() => goDetalhesLivro(item.id)}
+                  />
                 </Animated.View>
               );
             }}
@@ -117,16 +100,34 @@ export default function Home() {
         </Text>
         <View style={styles.suggestion}>
           <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[0].id)}
+              book={books[0]}
+            />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[1].id)}
+              book={books[1]}
+            />
           </View>
           <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[2].id)}
+              book={books[2]}
+            />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[3].id)}
+              book={books[3]}
+            />
           </View>
           <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[4].id)}
+              book={books[4]}
+            />
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(books[5].id)}
+              book={books[5]}
+            />
           </View>
         </View>
       </ScrollView>

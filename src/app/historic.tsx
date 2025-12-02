@@ -2,46 +2,27 @@ import { router } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import CardBookHisMedium from "../Components/cardBookHisMedium";
 
-const bookData = [
-  {
-    id: "1",
-    title: "Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.5,
-    loan: "8/10/2025",
-    return: "15/10/2025",
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "2",
-    title: "Não Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.0,
-    loan: "12/09/2025",
-    return: "19/09/2025",
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "3",
-    title: "Desisto de Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 3.5,
-    loan: "14/05/2025",
-    return: "21/05/2025",
-    uri: require("@/assets/images/image.png"),
-  },
-];
+import { books } from "@/src/Components/objStorage";
 
 export default function Favorites() {
-  function goToDetalhesLivro() {
-    router.push("/detalheslivro");
+  function goDetalhesLivro(id: string) {
+    router.push({
+      pathname: "/[detalheslivro]",
+      params: { detalheslivro: id },
+    });
   }
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <CardBookHisMedium book={bookData[0]} clicked={goToDetalhesLivro} />
-        <CardBookHisMedium book={bookData[1]} clicked={goToDetalhesLivro} />
+        <CardBookHisMedium
+          book={books[0]}
+          clicked={() => goDetalhesLivro(books[0].id)}
+        />
+        <CardBookHisMedium
+          book={books[1]}
+          clicked={() => goDetalhesLivro(books[1].id)}
+        />
       </ScrollView>
     </View>
   );

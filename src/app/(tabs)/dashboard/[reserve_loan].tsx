@@ -7,6 +7,8 @@ import CardBookReMedium from "@/src/Components/cardBookReMedium";
 import Header from "@/src/Components/header";
 import OptionSection from "@/src/Components/optionSection";
 
+import { books } from "@/src/Components/objStorage";
+
 export default function Historic() {
   const [section, setSection] = useState("reserva");
 
@@ -22,30 +24,6 @@ export default function Historic() {
     if (val === "emprestimo") setSection("emprestimo");
     else if (val === "reserva") setSection("reserva");
   }, [selected?.reserve_loan]);
-
-  const bookData = [
-    {
-      id: "1",
-      title: "Entendendo Algoritmos",
-      author: "Aditya Y. Bhargava",
-      day: "1",
-      uri: require("@/assets/images/image.png"),
-    },
-    {
-      id: "2",
-      title: "Não Entendendo Algoritmos",
-      author: "Aditya Y. Bhargava",
-      day: "4",
-      uri: require("@/assets/images/image.png"),
-    },
-    {
-      id: "3",
-      title: "Desisto de Algoritmos",
-      author: "Aditya Y. Bhargava",
-      day: "1",
-      uri: require("@/assets/images/image.png"),
-    },
-  ];
 
   function changeSection(val: string) {
     setSection(val);
@@ -86,12 +64,12 @@ export default function Historic() {
 
         {section === "emprestimo" ? (
           <View style={styles.booksContainer}>
-            <CardBookMedium book={bookData[0]} clicked={goDetalhesLivro} />
-            <CardBookMedium book={bookData[1]} clicked={goDetalhesLivro} />
+            <CardBookMedium book={books[0]} clicked={goDetalhesLivro} />
+            <CardBookMedium book={books[1]} clicked={goDetalhesLivro} />
           </View>
         ) : (
           <View style={styles.booksContainer}>
-            <CardBookReMedium book={bookData[2]} clicked={goDetalhesLivro} />
+            <CardBookReMedium book={books[2]} clicked={goDetalhesLivro} />
           </View>
         )}
       </ScrollView>
