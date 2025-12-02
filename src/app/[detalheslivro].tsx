@@ -1,6 +1,7 @@
+import { Octicons } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
-import { Octicons } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
 import {
   Image,
   StyleSheet,
@@ -10,19 +11,24 @@ import {
   View,
 } from "react-native";
 
+import { books } from "@/src/Components/objStorage";
+
 export default function DetalhesLivro() {
+  const selected = useLocalSearchParams();
+  const book = books.find((b) => b.id === selected.detalheslivro);
+
   return (
     <View style={styles.container}>
       <View style={styles.divHeaderLivro}>
         <View style={styles.BackgroundLivro}>
           <Image
-            source={require("@/assets/images/img/livro1.png")}
+            source={book?.uri}
             style={{ width: "auto", height: "90%", margin: 8 }}
           ></Image>
         </View>
         <View style={styles.divHeaderDescLivro}>
-          <Text style={styles.titulo}>Entendendo Algorítimos</Text>
-          <Text style={styles.subtitulo}>Aditya Y. Bhargava</Text>
+          <Text style={styles.titulo}>{book?.title}</Text>
+          <Text style={styles.subtitulo}>{book?.author}</Text>
           <View style={styles.divEstrelas}>
             <AntDesign name="star" size={24} color="black" />
             <AntDesign name="star" size={24} color="black" />
@@ -38,9 +44,9 @@ export default function DetalhesLivro() {
               <Text style={styles.descricaoKey}> Idioma</Text>
             </View>
             <View>
-              <Text style={styles.descricaoValue}>4</Text>
-              <Text style={styles.descricaoValue}>2017</Text>
-              <Text style={styles.descricaoValue}>Português</Text>
+              <Text style={styles.descricaoValue}>{book?.exemplares}</Text>
+              <Text style={styles.descricaoValue}>{book?.ano}</Text>
+              <Text style={styles.descricaoValue}>{book?.idioma}</Text>
             </View>
           </View>
         </View>
@@ -49,22 +55,25 @@ export default function DetalhesLivro() {
         <View>
           <Text style={styles.descricaoKey}>Categoria</Text>
           <Text style={styles.descricaoKey}>Autor</Text>
-          <Text style={styles.descricaoKey}>Tombo</Text>
           <Text style={styles.descricaoKey}>País</Text>
           <Text style={styles.descricaoKey}>Editora</Text>
         </View>
         <View>
-          <Text style={styles.descricaoValue}>Programação, Algoritmos</Text>
-          <Text style={styles.descricaoValue}>Aditya Y. Bhargava</Text>
-          <Text style={styles.descricaoValue}>01234</Text>
-          <Text style={styles.descricaoValue}>Brasil</Text>
-          <Text style={styles.descricaoValue}>Nova TEC</Text>
+          <Text style={styles.descricaoValue}>
+            {book?.categoria.join(", ")}
+          </Text>
+          <Text style={styles.descricaoValue}>{book?.author}</Text>
+          <Text style={styles.descricaoValue}>{book?.pais}</Text>
+          <Text style={styles.descricaoValue}>{book?.editora}</Text>
         </View>
       </View>
       <View style={styles.palavraChaveDiv}>
         <Text style={styles.subtitulo}>Palavras chaves:</Text>
-        <Text style={styles.palavraChave}>Programação</Text>
-        <Text style={styles.palavraChave}>Algorítimos</Text>
+        {book?.categoria.map((cat, index) => (
+          <View key={index} style={styles.palavraChave}>
+            <Text>{cat}</Text>
+          </View>
+        ))}
       </View>
       <View style={styles.divAvaliacaoEstrelas}>
         <Feather name="star" size={32} color="black" />
