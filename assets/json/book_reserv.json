@@ -1,0 +1,12 @@
+[
+  { "id": "1", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "2", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "3", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "4", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "5", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "6", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "7", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "8", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "9", "reservado": false, "espera": false, "dias": 3 },
+  { "id": "10", "reservado": false, "espera": false, "dias": 3 }
+]

@@ -1,0 +1,247 @@
+[
+  {
+    "id": 1,
+    "bookId": "1",
+    "comentario": "Melhor livro que já li! Explica algoritmos de forma simples.",
+    "nome": "Gabriel Marcos",
+    "data": "02 de Fevereiro de 2022"
+  },
+  {
+    "id": 2,
+    "bookId": "1",
+    "comentario": "Ótimos exemplos e ilustrações. Ajudou muito na disciplina.",
+    "nome": "Mariana Alves",
+    "data": "15 de Março de 2023"
+  },
+  {
+    "id": 3,
+    "bookId": "1",
+    "comentario": "Recomendado para iniciantes e para quem revisa conceitos.",
+    "nome": "Lucas Ferreira",
+    "data": "07 de Julho de 2021"
+  },
+  {
+    "id": 4,
+    "bookId": "1",
+    "comentario": "Didático e bem explicado, recomendo para iniciantes.",
+    "nome": "Lucas Santos",
+    "data": "18 de Agosto de 2024"
+  },
+  {
+    "id": 5,
+    "bookId": "2",
+    "comentario": "Conceitos de SQL bem claros e com exercícios práticos.",
+    "nome": "Ana Paula",
+    "data": "11 de Janeiro de 2020"
+  },
+  {
+    "id": 6,
+    "bookId": "2",
+    "comentario": "Boa referência para consultas e modelagem básica.",
+    "nome": "Rodrigo Souza",
+    "data": "22 de Abril de 2022"
+  },
+  {
+    "id": 7,
+    "bookId": "2",
+    "comentario": "Faltou aprofundar índices, mas ótimo para iniciantes.",
+    "nome": "Camila Ribeiro",
+    "data": "03 de Setembro de 2023"
+  },
+  {
+    "id": 8,
+    "bookId": "2",
+    "comentario": "Clareza e exemplos objetivos. Excelente referência rápida.",
+    "nome": "Felipe Moreira",
+    "data": "10 de Junho de 2022"
+  },
+  {
+    "id": 9,
+    "bookId": "3",
+    "comentario": "Aborda POO com exemplos didáticos em Java.",
+    "nome": "Thiago Mendes",
+    "data": "19 de Maio de 2019"
+  },
+  {
+    "id": 10,
+    "bookId": "3",
+    "comentario": "Livro bem organizado e fácil de acompanhar.",
+    "nome": "Beatriz Lima",
+    "data": "30 de Outubro de 2020"
+  },
+  {
+    "id": 11,
+    "bookId": "3",
+    "comentario": "Útil para práticas em laboratório e provas.",
+    "nome": "Mateus Oliveira",
+    "data": "08 de Fevereiro de 2021"
+  },
+  {
+    "id": 12,
+    "bookId": "3",
+    "comentario": "Explica conceitos com clareza e bons exemplos.",
+    "nome": "Ana Silva",
+    "data": "12 de Março de 2022"
+  },
+  {
+    "id": 13,
+    "bookId": "3",
+    "comentario": "Capítulos bem estruturados, ótimo para rever fundamentos.",
+    "nome": "Sofia Rocha",
+    "data": "21 de Setembro de 2023"
+  },
+  {
+    "id": 14,
+    "bookId": "4",
+    "comentario": "Excelente para entender lógica antes de programar.",
+    "nome": "Paula Santos",
+    "data": "12 de Junho de 2018"
+  },
+  {
+    "id": 15,
+    "bookId": "4",
+    "comentario": "Muitos exercícios resolvidos; super didático.",
+    "nome": "Eduardo Costa",
+    "data": "27 de Agosto de 2022"
+  },
+  {
+    "id": 16,
+    "bookId": "4",
+    "comentario": "Indicado para quem está começando do zero.",
+    "nome": "Fernanda Rocha",
+    "data": "05 de Maio de 2020"
+  },
+  {
+    "id": 17,
+    "bookId": "5",
+    "comentario": "Aborda IA aplicada à programação de forma prática.",
+    "nome": "Rafael Torres",
+    "data": "14 de Novembro de 2021"
+  },
+  {
+    "id": 18,
+    "bookId": "5",
+    "comentario": "Conteúdo atual e exemplos úteis para projetos.",
+    "nome": "Juliana Martins",
+    "data": "02 de Abril de 2022"
+  },
+  {
+    "id": 19,
+    "bookId": "5",
+    "comentario": "Bom equilíbrio entre teoria e prática.",
+    "nome": "Igor Almeida",
+    "data": "21 de Janeiro de 2023"
+  },
+  {
+    "id": 20,
+    "bookId": "5",
+    "comentario": "Excelente para projetos práticos e aplicações.",
+    "nome": "Marcos Pereira",
+    "data": "05 de Maio de 2023"
+  },
+  {
+    "id": 21,
+    "bookId": "5",
+    "comentario": "Referência prática e atual para quem quer aplicar IA.",
+    "nome": "Renan Costa",
+    "data": "17 de Março de 2024"
+  },
+  {
+    "id": 22,
+    "bookId": "6",
+    "comentario": "Cobre bem conceitos de C++ e boas práticas.",
+    "nome": "Sofia Pereira",
+    "data": "09 de Março de 2017"
+  },
+  {
+    "id": 23,
+    "bookId": "6",
+    "comentario": "Algumas partes poderiam ser mais modernas, mas é sólido.",
+    "nome": "Diego Nunes",
+    "data": "16 de Setembro de 2019"
+  },
+  {
+    "id": 24,
+    "bookId": "6",
+    "comentario": "Útil para quem já conhece outra linguagem e quer aprender C++.",
+    "nome": "Lorena Dias",
+    "data": "29 de Junho de 2020"
+  },
+  {
+    "id": 25,
+    "bookId": "7",
+    "comentario": "Ótimo para aprofundar Java e padrões básicos.",
+    "nome": "Victor Hugo",
+    "data": "04 de Fevereiro de 2019"
+  },
+  {
+    "id": 26,
+    "bookId": "7",
+    "comentario": "Exemplos práticos que facilitam o entendimento.",
+    "nome": "Amanda Costa",
+    "data": "18 de Abril de 2021"
+  },
+  {
+    "id": 27,
+    "bookId": "7",
+    "comentario": "Bom para cursar junto com as aulas.",
+    "nome": "Paulo Henrique",
+    "data": "30 de Novembro de 2022"
+  },
+  {
+    "id": 28,
+    "bookId": "7",
+    "comentario": "Material completo e atualizado.",
+    "nome": "Patrícia Gomes",
+    "data": "09 de Setembro de 2021"
+  },
+  {
+    "id": 29,
+    "bookId": "8",
+    "comentario": "Cobertura excelente de Python avançado.",
+    "nome": "Carolina Mendes",
+    "data": "25 de Outubro de 2020"
+  },
+  {
+    "id": 30,
+    "bookId": "8",
+    "comentario": "Leitura fluida e muitos exemplos práticos.",
+    "nome": "Guilherme Lopes",
+    "data": "13 de Maio de 2021"
+  },
+  {
+    "id": 31,
+    "bookId": "8",
+    "comentario": "Ajudou bastante na construção de scripts e automações.",
+    "nome": "Natália Barbosa",
+    "data": "06 de Agosto de 2022"
+  },
+  {
+    "id": 32,
+    "bookId": "9",
+    "comentario": "Perfeito para introduzir crianças à programação.",
+    "nome": "Marcos Vinícius",
+    "data": "20 de Julho de 2018"
+  },
+  {
+    "id": 33,
+    "bookId": "9",
+    "comentario": "Atividades divertidas e educativas.",
+    "nome": "Lara Gomes",
+    "data": "10 de Março de 2019"
+  },
+  {
+    "id": 34,
+    "bookId": "9",
+    "comentario": "Material muito acessível para professores e pais.",
+    "nome": "Renata Silva",
+    "data": "01 de Dezembro de 2020"
+  },
+  {
+    "id": 35,
+    "bookId": "9",
+    "comentario": "Atividades motivadoras e fáceis de aplicar em sala.",
+    "nome": "Eduardo Lima",
+    "data": "22 de Fevereiro de 2019"
+  }
+]
