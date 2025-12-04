@@ -78,7 +78,7 @@ export const books = [
     idioma: "Português",
   },
   {
-    id: "8",
+    id: "7",
     uri: require("@/assets/images/books/programandoJava.png"),
     title: "Programando em Java",
     author: "Juliana Costa",
@@ -91,7 +91,7 @@ export const books = [
     exemplares: 4,
   },
   {
-    id: "9",
+    id: "8",
     uri: require("@/assets/images/books/pythonFluente.png"),
     title: "Python Fluente",
     author: "Luciana Rocha",
@@ -104,7 +104,7 @@ export const books = [
     exemplares: 3,
   },
   {
-    id: "10",
+    id: "9",
     uri: require("@/assets/images/books/scratch.png"),
     title: "Scratch: Programação para Crianças",
     author: "Fernanda Gomes",
