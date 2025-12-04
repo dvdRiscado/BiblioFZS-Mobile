@@ -7,9 +7,11 @@ import { books } from "@/src/Components/objStorage";
 import { useCallback, useState } from "react";
 
 import { loadFavorites, sendQntFavoritos } from "../Components/funFavorites";
+import { loadReservs } from "../Components/funReservs";
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState<any>(null);
+  const [reservs, setReservs] = useState<any>(null);
   const [qtdFavoritos, setQtdFavoritos] = useState(0);
 
   // useFocusEffect executa a função toda vez que a tela recebe foco
@@ -17,6 +19,8 @@ export default function Favorites() {
     useCallback(() => {
       loadFavorites({ setFavorites });
       console.log("Favoritos carregados!");
+      loadReservs({ setReservs });
+      console.log("Reservas carregadas!");
     }, [])
   );
 
@@ -49,6 +53,8 @@ export default function Favorites() {
             <CardBookDeMedium
               favorites={favorites}
               setFavorites={setFavorites}
+              reservs={reservs}
+              setReservs={setReservs}
               key={book.id}
               book={book}
               clicked={() => goDetalhesLivro(book.id.toString())}

@@ -6,6 +6,10 @@ import CardBookReMedium from "@/src/Components/cardBookReMedium";
 import Header from "@/src/Components/header";
 import OptionSection from "@/src/Components/optionSection";
 
+/*
+import CardBookMedium from "@/src/Components/cardBookMedium";
+*/
+
 import { loadReservs, sendQntReservados } from "@/src/Components/funReservs";
 import { books } from "@/src/Components/objStorage";
 
@@ -83,6 +87,13 @@ export default function Historic() {
         {section === "emprestimo" ? (
           <View style={styles.booksContainer}>
             <Text style={styles.text}>Nenhum livro emprestado</Text>
+            {/*
+              <CardBookMedium
+              book={books[7]}
+              daysLeft={6}
+              clicked={() => goDetalhesLivro(books[7].id)}
+            />
+            */}
           </View>
         ) : (
           <View style={styles.booksContainer}>

@@ -9,6 +9,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { loadFavorites } from "@/src/Components/funFavorites";
 
+import { loadReservs } from "@/src/Components/funReservs";
 import { books } from "@/src/Components/objStorage";
 
 export default function Catalog() {
@@ -16,12 +17,15 @@ export default function Catalog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredBooks, setFilteredBooks] = useState(books);
 
-  let [favorites, setFavorites] = useState<any>(null);
+  const [favorites, setFavorites] = useState<any>(null);
+  const [reservs, setReservs] = useState<any>(null);
 
   useFocusEffect(
     useCallback(() => {
       loadFavorites({ setFavorites });
       console.log("Favoritos carregados!");
+      loadReservs({ setReservs });
+      console.log("Reservas carregadas!");
     }, [])
   );
 
@@ -60,6 +64,8 @@ export default function Catalog() {
             clicked={() => goDetalhesLivro(filteredBooks[i].id)}
             favorites={favorites}
             setFavorites={setFavorites}
+            reservs={reservs}
+            setReservs={setReservs}
             book={filteredBooks[i]}
           />
           {filteredBooks[i + 1] && (
@@ -67,6 +73,8 @@ export default function Catalog() {
               clicked={() => goDetalhesLivro(filteredBooks[i + 1].id)}
               favorites={favorites}
               setFavorites={setFavorites}
+              reservs={reservs}
+              setReservs={setReservs}
               book={filteredBooks[i + 1]}
             />
           )}
