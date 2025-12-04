@@ -5,19 +5,24 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { setReservadoFalse } from "../funReservs";
 import { styles } from "./style";
 
 type CardBookReMediumProps = {
   book: any;
+  daysLeft: number;
+  reservs: any;
+  setReservs: React.Dispatch<React.SetStateAction<any>>;
   clicked: (event: GestureResponderEvent) => void;
 };
 
 export default function CardBookReMedium({
   book,
   clicked,
+  daysLeft,
+  reservs,
+  setReservs,
 }: CardBookReMediumProps) {
-  let percent = (((Number(book.day) - 7) * -1) / 7) * 100;
-
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.imageContainer} onPress={clicked}>
@@ -29,10 +34,13 @@ export default function CardBookReMedium({
           <Text style={styles.text}>{book.author}</Text>
         </View>
         <View style={styles.progressContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setReservadoFalse({ reservs, book, setReservs })}
+          >
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
-          <Text style={styles.label}>{book.day} dias restantes</Text>
+          <Text style={styles.label}>{daysLeft} dias restantes</Text>
         </View>
       </View>
     </View>

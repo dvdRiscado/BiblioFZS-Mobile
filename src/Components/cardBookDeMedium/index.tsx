@@ -6,20 +6,33 @@ import {
   View,
 } from "react-native";
 
-import { Octicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
+import { useEffect, useState } from "react";
 import { styles } from "./style";
+
+import { sendIsFavorito, toggleFavorito } from "../funFavorites";
 
 type CardBookDeMediumProps = {
   book: any;
+  favorites: any;
+  setFavorites: React.Dispatch<React.SetStateAction<any>>;
   clicked: (event: GestureResponderEvent) => void;
 };
 
 export default function CardBookDeMedium({
   book,
+  favorites,
+  setFavorites,
   clicked,
 }: CardBookDeMediumProps) {
+  const [isFavorito, setIsFavorito] = useState(false);
+
+  useEffect(() => {
+    sendIsFavorito({ favorites, setIsFavorito, id: book.id });
+  }, [favorites, book.id]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.imageContainer} onPress={clicked}>
@@ -36,8 +49,22 @@ export default function CardBookDeMedium({
           </TouchableOpacity>
 
           <View style={styles.options}>
-            <TouchableOpacity style={styles.button}>
-              <Octicons name="bookmark-slash" size={25} color="black" />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                toggleFavorito({
+                  favorites,
+                  book,
+                  setIsFavorito,
+                  setFavorites,
+                })
+              }
+            >
+              <Ionicons
+                name={isFavorito ? "bookmark" : "bookmark-outline"}
+                size={24}
+                color="black"
+              />
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}>
               <AntDesign name="plus-circle" size={24} color="black" />

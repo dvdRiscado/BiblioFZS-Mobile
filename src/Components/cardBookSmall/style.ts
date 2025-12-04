@@ -10,10 +10,12 @@ export const styles = StyleSheet.create({
   imageWrapper: {
     alignItems: "center",
     justifyContent: "center",
-    height: "auto",
+    height: 255,
+    width: "100%",
   },
   image: {
     width: "95%",
+    height: "100%",
     aspectRatio: undefined,
     marginTop: -22,
     marginBottom: -28,
@@ -22,6 +24,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "regular",
     width: "100%",
+    height: 40,
     textAlign: "left",
     paddingHorizontal: 4,
   },
