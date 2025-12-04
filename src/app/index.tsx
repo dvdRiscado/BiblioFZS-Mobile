@@ -2,11 +2,11 @@ import { Button } from "@/src/Components/button";
 import { router } from "expo-router";
 import {
   Image,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
 } from "react-native";
 import "react-native-gesture-handler";
 
@@ -52,9 +52,11 @@ export default function Home() {
         <TouchableOpacity style={styles.button} onPress={goRegister}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
+        {/*
         <TouchableOpacity style={styles.button} onPress={goDashboard}>
           <Text style={styles.buttonText}>Atalho</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> 
+        */}
       </View>
     </View>
   );
