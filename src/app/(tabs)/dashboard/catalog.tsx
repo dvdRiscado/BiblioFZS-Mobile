@@ -2,18 +2,45 @@ import CardBookSmall from "@/src/Components/cardBookSmall";
 import Header from "@/src/Components/header";
 import InputSearch from "@/src/Components/inputSearch";
 import { OpcaoLivro } from "@/src/Components/opcaoLivro";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
+
+import { loadFavorites } from "@/src/Components/funFavorites";
 
 import { books } from "@/src/Components/objStorage";
 
 export default function Catalog() {
   const [opcaoLivro, setOpcaoLivro] = useState("livro");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState(books);
+
+  let [favorites, setFavorites] = useState<any>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadFavorites({ setFavorites });
+      console.log("Favoritos carregados!");
+    }, [])
+  );
 
   function liga(val: string) {
     setOpcaoLivro(val);
+  }
+
+  function handleSearch(query: string) {
+    setSearchQuery(query);
+
+    if (query.trim() === "") {
+      setFilteredBooks(books);
+    } else {
+      const filtered = books.filter((book) =>
+        book.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredBooks(filtered);
+      console.log("Livros encontrados:", filtered);
+    }
   }
 
   function goDetalhesLivro(id: string) {
@@ -23,6 +50,32 @@ export default function Catalog() {
     });
   }
 
+  // Função para renderizar os livros em linhas de 2
+  function renderBooks() {
+    const rows = [];
+    for (let i = 0; i < filteredBooks.length; i += 2) {
+      rows.push(
+        <View key={i} style={styles.row}>
+          <CardBookSmall
+            clicked={() => goDetalhesLivro(filteredBooks[i].id)}
+            favorites={favorites}
+            setFavorites={setFavorites}
+            book={filteredBooks[i]}
+          />
+          {filteredBooks[i + 1] && (
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(filteredBooks[i + 1].id)}
+              favorites={favorites}
+              setFavorites={setFavorites}
+              book={filteredBooks[i + 1]}
+            />
+          )}
+        </View>
+      );
+    }
+    return rows;
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -30,7 +83,7 @@ export default function Catalog() {
         showsVerticalScrollIndicator={false}
       >
         <Header />
-        <InputSearch />
+        <InputSearch value={searchQuery} onChangeText={handleSearch} />
         <View style={styles.containerOpcao}>
           <OpcaoLivro
             onPress={() => liga("livro")}
@@ -54,38 +107,7 @@ export default function Catalog() {
             Monografias
           </OpcaoLivro>
         </View>
-        <View style={styles.suggestion}>
-          <View style={styles.row}>
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[0].id)}
-              book={books[0]}
-            />
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[1].id)}
-              book={books[1]}
-            />
-          </View>
-          <View style={styles.row}>
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[2].id)}
-              book={books[2]}
-            />
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[3].id)}
-              book={books[3]}
-            />
-          </View>
-          <View style={styles.row}>
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[4].id)}
-              book={books[4]}
-            />
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[5].id)}
-              book={books[5]}
-            />
-          </View>
-        </View>
+        <View style={styles.suggestion}>{renderBooks()}</View>
       </ScrollView>
     </View>
   );

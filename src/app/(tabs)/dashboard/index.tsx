@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { Extrapolate, interpolate } from "react-native-reanimated";
@@ -12,12 +12,56 @@ import InputSearch from "@/src/Components/inputSearch";
 
 import { books } from "@/src/Components/objStorage";
 
+import { loadFavorites } from "@/src/Components/funFavorites";
+import { loadReservs } from "@/src/Components/funReservs";
+
+/*
+import { clearFavorites } from "@/src/Components/funFavorites";
+import { clearReservs } from "@/src/Components/funReservs";
+import { clearComments } from "@/src/Components/funComments";
+
+// Limpar dados de teste
+clearFavorites();
+clearReservs();
+clearComments();
+*/
+
 // Icones
 export default function Home() {
   const width = Dimensions.get("window").width;
 
+  const [favorites, setFavorites] = useState<any>(null);
+  const [reservs, setReservs] = useState<any>(null);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState(books);
+
+  // useFocusEffect executa a função toda vez que a tela recebe foco
+  useFocusEffect(
+    useCallback(() => {
+      loadFavorites({ setFavorites });
+      console.log("Favoritos carregados!");
+      loadReservs({ setReservs });
+      console.log("Reservas carregadas!");
+    }, [])
+  );
+
+  function handleSearch(query: string) {
+    setSearchQuery(query);
+
+    if (query.trim() === "") {
+      setFilteredBooks(books);
+    } else {
+      const filtered = books.filter((book) =>
+        book.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredBooks(filtered);
+      console.log("Livros encontrados:", filtered);
+    }
+  }
 
   function goDetalhesLivro(id: string) {
     router.push({
@@ -46,6 +90,36 @@ export default function Home() {
     };
   }, []);
 
+  // Função para renderizar os livros em linhas de 2
+  function renderBooks() {
+    const rows = [];
+    for (let i = 0; i < filteredBooks.length; i += 2) {
+      rows.push(
+        <View key={i} style={styles.row}>
+          <CardBookSmall
+            clicked={() => goDetalhesLivro(filteredBooks[i].id)}
+            favorites={favorites}
+            setFavorites={setFavorites}
+            reservs={reservs}
+            setReservs={setReservs}
+            book={filteredBooks[i]}
+          />
+          {filteredBooks[i + 1] && (
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(filteredBooks[i + 1].id)}
+              favorites={favorites}
+              setFavorites={setFavorites}
+              reservs={reservs}
+              setReservs={setReservs}
+              book={filteredBooks[i + 1]}
+            />
+          )}
+        </View>
+      );
+    }
+    return rows;
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -54,82 +128,123 @@ export default function Home() {
       >
         <Header />
         <Text style={styles.headline}>Bem-Vindo, David!</Text>
-        <InputSearch />
-        <View style={styles.carrossel}>
-          <Text style={styles.titleWhite}>Livros para você!</Text>
-          <Text style={styles.titleBook}>
-            {books[activeIndex]?.title || "N/A"}
-          </Text>
-          <Text style={styles.textWhite}>
-            {books[activeIndex]?.author || "N/A"}
-          </Text>
-          <Carousel
-            loop
-            width={width}
-            height={width - 55}
-            data={books}
-            autoPlay={true}
-            autoPlayInterval={5000}
-            scrollAnimationDuration={500}
-            mode="parallax"
-            modeConfig={{
-              parallaxScrollingScale: 0.9,
-              parallaxScrollingOffset: 190,
-            }}
-            onSnapToItem={(index) => setActiveIndex(index)}
-            pagingEnabled={true}
-            snapEnabled={true}
-            renderItem={({ item, index }) => {
-              // Passamos a função animationStyle para o Animated.View
-              const animatedStyle = animationStyle(
-                carouselRef.current?.getCurrentProgress?.() - index || 0
-              );
-              return (
-                <Animated.View style={animatedStyle}>
-                  <CardBookLarge
-                    book={item}
-                    clicked={() => goDetalhesLivro(item.id)}
-                  />
-                </Animated.View>
-              );
-            }}
-          />
-        </View>
-        <Text style={[styles.title, { marginBottom: "2%" }]}>
-          Outras Sugestões!
-        </Text>
-        <View style={styles.suggestion}>
-          <View style={styles.row}>
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[0].id)}
-              book={books[0]}
-            />
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[1].id)}
-              book={books[1]}
-            />
-          </View>
-          <View style={styles.row}>
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[2].id)}
-              book={books[2]}
-            />
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[3].id)}
-              book={books[3]}
-            />
-          </View>
-          <View style={styles.row}>
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[4].id)}
-              book={books[4]}
-            />
-            <CardBookSmall
-              clicked={() => goDetalhesLivro(books[5].id)}
-              book={books[5]}
-            />
-          </View>
-        </View>
+        <InputSearch value={searchQuery} onChangeText={handleSearch} />
+
+        {searchQuery.trim() === "" ? (
+          <>
+            <View style={styles.carrossel}>
+              <Text style={styles.titleWhite}>Livros para você!</Text>
+              <Text style={styles.titleBook}>
+                {books[activeIndex]?.title || "N/A"}
+              </Text>
+              <Text style={styles.textWhite}>
+                {books[activeIndex]?.author || "N/A"}
+              </Text>
+              <Carousel
+                loop
+                width={width}
+                height={width - 55}
+                data={books}
+                autoPlay={true}
+                autoPlayInterval={5000}
+                scrollAnimationDuration={500}
+                mode="parallax"
+                modeConfig={{
+                  parallaxScrollingScale: 0.9,
+                  parallaxScrollingOffset: 190,
+                }}
+                onSnapToItem={(index) => setActiveIndex(index)}
+                pagingEnabled={true}
+                snapEnabled={true}
+                renderItem={({ item, index }) => {
+                  const animatedStyle = animationStyle(
+                    carouselRef.current?.getCurrentProgress?.() - index || 0
+                  );
+                  return (
+                    <Animated.View style={animatedStyle}>
+                      <CardBookLarge
+                        book={item}
+                        favorites={favorites}
+                        setFavorites={setFavorites}
+                        reservs={reservs}
+                        setReservs={setReservs}
+                        clicked={() => goDetalhesLivro(item.id)}
+                      />
+                    </Animated.View>
+                  );
+                }}
+              />
+            </View>
+            <Text style={[styles.title, { marginBottom: "2%" }]}>
+              Outras Sugestões!
+            </Text>
+            <View style={styles.suggestion}>
+              <View style={styles.row}>
+                <CardBookSmall
+                  clicked={() => goDetalhesLivro(books[0].id)}
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                  reservs={reservs}
+                  setReservs={setReservs}
+                  book={books[0]}
+                />
+                <CardBookSmall
+                  clicked={() => goDetalhesLivro(books[1].id)}
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                  reservs={reservs}
+                  setReservs={setReservs}
+                  book={books[1]}
+                />
+              </View>
+              <View style={styles.row}>
+                <CardBookSmall
+                  clicked={() => goDetalhesLivro(books[2].id)}
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                  reservs={reservs}
+                  setReservs={setReservs}
+                  book={books[2]}
+                />
+                <CardBookSmall
+                  clicked={() => goDetalhesLivro(books[3].id)}
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                  reservs={reservs}
+                  setReservs={setReservs}
+                  book={books[3]}
+                />
+              </View>
+              <View style={styles.row}>
+                <CardBookSmall
+                  clicked={() => goDetalhesLivro(books[4].id)}
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                  reservs={reservs}
+                  setReservs={setReservs}
+                  book={books[4]}
+                />
+                <CardBookSmall
+                  clicked={() => goDetalhesLivro(books[5].id)}
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                  reservs={reservs}
+                  setReservs={setReservs}
+                  book={books[5]}
+                />
+              </View>
+            </View>
+          </>
+        ) : (
+          <>
+            <Text
+              style={[styles.title, { marginBottom: "2%", marginTop: "4%" }]}
+            >
+              Resultados da Pesquisa
+            </Text>
+            <View style={styles.suggestion}>{renderBooks()}</View>
+          </>
+        )}
       </ScrollView>
     </View>
   );

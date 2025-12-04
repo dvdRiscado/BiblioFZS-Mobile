@@ -1,10 +1,32 @@
-import { router } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { router, useFocusEffect } from "expo-router";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import CardBookDeMedium from "../Components/cardBookDeMedium";
 
 import { books } from "@/src/Components/objStorage";
 
+import { useCallback, useState } from "react";
+
+import { loadFavorites, sendQntFavoritos } from "../Components/funFavorites";
+
 export default function Favorites() {
+  const [favorites, setFavorites] = useState<any>(null);
+  const [qtdFavoritos, setQtdFavoritos] = useState(0);
+
+  // useFocusEffect executa a função toda vez que a tela recebe foco
+  useFocusEffect(
+    useCallback(() => {
+      loadFavorites({ setFavorites });
+      console.log("Favoritos carregados!");
+    }, [])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      sendQntFavoritos({ favorites, setQtdFavoritos });
+      console.log("Quantidade de favoritos atualizada!");
+    }, [favorites])
+  );
+
   function goDetalhesLivro(id: string) {
     router.push({
       pathname: "/[detalheslivro]",
@@ -12,17 +34,27 @@ export default function Favorites() {
     });
   }
 
+  // Filtra os livros que são favoritos
+  const favoriteBooks = books.filter((book) =>
+    favorites?.some((fav: any) => fav.id === book.id.toString() && fav.favorito)
+  );
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <CardBookDeMedium
-          book={books[2]}
-          clicked={() => goDetalhesLivro(books[2].id)}
-        />
-        <CardBookDeMedium
-          book={books[1]}
-          clicked={() => goDetalhesLivro(books[1].id)}
-        />
+        {qtdFavoritos === 0 ? (
+          <Text style={styles.text}>Nenhum favorito encontrado.</Text>
+        ) : (
+          favoriteBooks.map((book) => (
+            <CardBookDeMedium
+              favorites={favorites}
+              setFavorites={setFavorites}
+              key={book.id}
+              book={book}
+              clicked={() => goDetalhesLivro(book.id.toString())}
+            />
+          ))
+        )}
       </ScrollView>
     </View>
   );
@@ -37,5 +69,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginTop: 48,
     height: "100%",
+    paddingBottom: 20,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "medium",
+    width: "100%",
+    textAlign: "center",
+    color: "rgba(0,0,0,0.6)",
+    marginTop: 32,
   },
 });
