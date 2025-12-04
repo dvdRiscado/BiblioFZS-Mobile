@@ -1,10 +1,10 @@
 import { UsuarioContext, userType } from "@/context/UsuarioContext";
-import { getMe, loginUsuarioApi, registerAluno, updateMe } from "@/services/usuarioService";
+import { getMe, getPresencaAlunos, loginUsuarioApi, registerAluno, registerPresencaAluno, updateMe } from "@/services/usuarioService";
 import { useContext } from "react";
 
 export function useUser(){
     const ctx = useContext(UsuarioContext)
-
+    
     function setUserContext(dados: userType){
         ctx!.setUser({
             nome: dados.nome!,
@@ -36,10 +36,18 @@ export function useUser(){
         setUserContext(me.data) 
     }
 
-    // async function cadastrarUsuario(formDados: object){
-    //     await registerAluno(formDados)
-    // }
+    async function cadastrarPresencaAluno(dataPresenca: string){
+        const dadosPresenca = {
+            "id_aluno": ctx?.user?.id,
+            "datetime_presenca": dataPresenca
+        }
+        registerPresencaAluno(ctx!.token!, dadosPresenca)
+    }
 
-    return {loginUsuario, atualizarUsuario, registrarAluno}
-
+    async function listarPresencasAlunos(){
+        const presencas = await getPresencaAlunos(ctx?.user?.id!)
+        return presencas
+    }
+    
+    return {loginUsuario, atualizarUsuario, registrarAluno, cadastrarPresencaAluno, listarPresencasAlunos}
 }

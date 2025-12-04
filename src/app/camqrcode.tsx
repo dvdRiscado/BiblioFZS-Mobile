@@ -11,7 +11,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  StatusBar,
 } from "react-native";
 
 export default function QrCode() {
@@ -29,10 +28,6 @@ export default function QrCode() {
     <View style={styles.container}>
       <Image source={require("@/assets/images/img/qrcode.png")}></Image>
       <Button title="abrir qr" onPress={handleOpenCamera}></Button>
-      {/* <Button title='abrir qr'>
-                <MaterialCommunityIcons name="border-radius" size={24} color="white" onPress={handleOpenCamera}/>
-                <Text style={styles.textoBotao}>Ler QR Code</Text>
-            </Button>  */}
       <View style={styles.navContainer}>
         <TouchableOpacity style={styles.itemContainer}>
           <MaterialCommunityIcons name="qrcode-scan" size={32} color="white" />

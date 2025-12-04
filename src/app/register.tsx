@@ -1,5 +1,4 @@
 import { useUser } from "@/hooks/useUser";
-import { router } from "expo-router";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -14,10 +13,6 @@ import { Button } from "../Components/button";
 import { InputPassword } from "../Components/inputPassword";
 
 import {
-  decideListCurso,
-  estados,
-  instituicoes,
-  periodos,
   validateBairro,
   validateCep,
   validateCidade,
@@ -38,27 +33,29 @@ import {
   validateRua,
   validateTelephone,
 } from "../Components/funValidate";
-import InputDatePicker from "../Components/inputDatePicker";
-import { InputPickerSelect } from "../Components/inputPickerSelect";
 import InputText from "../Components/inputText";
 
 export default function Register() {
   const [section, setSection] = useState(0);
 
   const { registrarAluno } = useUser();
-  const registrarUser = () => {
+  function registrarUser() {
     const formDados = {
       nome: name,
       sobrenome: lastname,
       email: email,
       cpf: cpf,
-      // cep: cep,
-      // complemento: complemento,
+      cep: 0,
+      complemento: complemento,
+      numero_residencia: number,
       password: password,
+      is_active: true,
+      is_superuser: false,
+      is_verified: false,
     };
-    // console.log(formDados);
+    console.log(formDados);
     registrarAluno(formDados);
-  };
+  }
 
   function upSection() {
     if (section === 0) {
@@ -67,11 +64,11 @@ export default function Register() {
         lastname !== "" &&
         cpf !== "" &&
         email !== "" &&
-        telephone !== "" &&
+        // telephone !== "" &&
         nameError === "" &&
         lastnameError === "" &&
         cpfError === "" &&
-        emailError === "" &&
+        // emailError === "" &&
         telephoneError === ""
       ) {
         setSection(section + 1);
@@ -79,7 +76,7 @@ export default function Register() {
         validateName(name, setName, setNameError);
         validateLastname(lastname, setLastname, setLastnameError);
         validateCpf(cpf, setCpf, setCpfError);
-        validateEmail(email, setEmail, setEmailError);
+        // validateEmail(email, setEmail, setEmailError);
         validateTelephone(telephone, setTelephone, setTelephoneError);
       }
     } else if (section === 1) {
@@ -130,15 +127,14 @@ export default function Register() {
         validateInicioCurso(inicioCurso, setInicioCurso, setInicioCursoError);
         validateFimCurso(fimCurso, setFimCurso, setFimCursoError);
       }
-    } else if (section === 1) {
+    } else if (section === 3) {
       if (
         password !== "" &&
         confirmPassword !== "" &&
         passwordError === "" &&
         confirmPasswordError === ""
       ) {
-        router.push("/(tabs)/dashboard");
-        console.log("passou aqui");
+        // router.push("/(tabs)/dashboard");
         registrarUser();
       } else {
         validatePassword(password, setPassword, setPasswordError);
@@ -277,7 +273,7 @@ export default function Register() {
                 <Text style={styles.caption}>{emailError}</Text>
               )}
 
-              <Text style={styles.label}>Telefone</Text>
+              {/* <Text style={styles.label}>Telefone</Text>
               <InputText
                 value={telephone}
                 onChangeText={(value) =>
@@ -289,12 +285,12 @@ export default function Register() {
               />
               {telephoneError !== "" && (
                 <Text style={styles.caption}>{telephoneError}</Text>
-              )}
+              )} */}
             </View>
 
             <Button text="Continuar" onPress={upSection} />
           </View>
-        ) : section === 1 ? (
+        ) : (
           <View style={styles.inputContainer}>
             <View>
               <Text style={styles.titulo}>Continue</Text>
@@ -318,7 +314,7 @@ export default function Register() {
                 <Text style={styles.caption}>{cepError}</Text>
               )}
 
-              <View style={styles.cidUfContainer}>
+              {/* <View style={styles.cidUfContainer}>
                 <View style={styles.cidContainer}>
                   <Text style={styles.label}>Cidade</Text>
                   <InputText
@@ -373,7 +369,7 @@ export default function Register() {
               />
               {ruaError !== "" && (
                 <Text style={styles.caption}>{ruaError}</Text>
-              )}
+              )} */}
 
               <View style={styles.numCompContainer}>
                 <View style={styles.numContainer}>
@@ -402,16 +398,57 @@ export default function Register() {
                 </View>
               </View>
             </View>
-            <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}>
               <View style={styles.buttonBack}>
                 <BtnBack onPress={backSection} />
               </View>
               <View style={styles.buttonNext}>
                 <Button text="Continuar" onPress={upSection} />
               </View>
+            </View> */}
+            <View>
+              <Text style={styles.label}>Senha</Text>
+              <InputPassword
+                type="password"
+                value={password}
+                onChangeText={(value) =>
+                  validatePassword(value, setPassword, setPasswordError)
+                }
+                placeholder="Digite sua senha"
+              />
+              {passwordError !== "" && (
+                <Text style={styles.caption}>{passwordError}</Text>
+              )}
+
+              <Text style={styles.label}>Confirmar Senha</Text>
+              <InputPassword
+                type="password"
+                value={confirmPassword}
+                onChangeText={(value) =>
+                  validateConfirmPassword(
+                    value,
+                    password,
+                    setConfirmPassword,
+                    setConfirmPasswordError
+                  )
+                }
+                placeholder="Confirme sua senha"
+              />
+              {confirmPasswordError !== "" && (
+                <Text style={styles.caption}>{confirmPasswordError}</Text>
+              )}
+            </View>
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonBack}>
+                <BtnBack onPress={backSection} />
+              </View>
+              <View style={styles.buttonNext}>
+                <Button text="Finalizar" onPress={upSection} />
+              </View>
             </View>
           </View>
-        ) : section === 2 ? (
+        )}
+        {/* : (
           <View style={styles.inputContainer}>
             <View>
               <Text style={styles.titulo}>Mais um pouco</Text>
@@ -419,7 +456,7 @@ export default function Register() {
                 Coloque os dados da sua matrícula
               </Text>
             </View>
-            {/* Campos de Matrícula */}
+            * Campos de Matrícula *
             <View>
               <Text style={styles.label}>Instituição</Text>
               <InputPickerSelect
@@ -503,67 +540,7 @@ export default function Register() {
               {fimCursoError !== "" && (
                 <Text style={styles.caption}>{fimCursoError}</Text>
               )}
-            </View>
-            <View style={styles.buttonContainer}>
-              <View style={styles.buttonBack}>
-                <BtnBack onPress={backSection} />
-              </View>
-              <View style={styles.buttonNext}>
-                <Button text="Continuar" onPress={upSection} />
-              </View>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.inputContainer}>
-            <View>
-              <Text style={styles.titulo}>Por Fim</Text>
-              <Text style={styles.subtitulo}>
-                Coloque e confirme a sua senha
-              </Text>
-            </View>
-            {/* Campos de Senha */}
-            <View>
-              <Text style={styles.label}>Senha</Text>
-              <InputPassword
-                type="password"
-                value={password}
-                onChangeText={(value) =>
-                  validatePassword(value, setPassword, setPasswordError)
-                }
-                placeholder="Digite sua senha"
-              />
-              {passwordError !== "" && (
-                <Text style={styles.caption}>{passwordError}</Text>
-              )}
-
-              <Text style={styles.label}>Confirmar Senha</Text>
-              <InputPassword
-                type="password"
-                value={confirmPassword}
-                onChangeText={(value) =>
-                  validateConfirmPassword(
-                    value,
-                    password,
-                    setConfirmPassword,
-                    setConfirmPasswordError
-                  )
-                }
-                placeholder="Confirme sua senha"
-              />
-              {confirmPasswordError !== "" && (
-                <Text style={styles.caption}>{confirmPasswordError}</Text>
-              )}
-            </View>
-            <View style={styles.buttonContainer}>
-              <View style={styles.buttonBack}>
-                <BtnBack onPress={backSection} />
-              </View>
-              <View style={styles.buttonNext}>
-                <Button text="Finalizar" onPress={upSection} />
-              </View>
-            </View>
-          </View>
-        )}
+            </View> */}
       </ScrollView>
     </KeyboardAvoidingView>
   );

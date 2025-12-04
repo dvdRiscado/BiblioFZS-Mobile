@@ -1,17 +1,32 @@
+import { useUser } from "@/hooks/useUser";
+import Presenca from "@/src/Components/presenca";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import Presenca from "../../../Components/presenca";
-
 export default function HistoricoQrCode() {
+  const { listarPresencasAlunos } = useUser();
+  const [listaPresenca, setListaPresenca] = useState<any[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      async function carregarPresencas() {
+        const presencas = await listarPresencasAlunos();
+        setListaPresenca(presencas?.data);
+        console.log(presencas!.data.id);
+        console.log(listaPresenca);
+      }
+      carregarPresencas();
+    }, [])
+  );
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.headline}>Histórico</Text>
-        <View style={styles.presencaContainer}>
-          <Presenca />
-          <Presenca />
-          <Presenca />
-          <Presenca />
-        </View>
+        <View style={styles.presencaContainer}></View>
+        {listaPresenca.map((i) => (
+          <Presenca key={i.id} dataPresenca={i.dataPresenca}></Presenca>
+        ))}
       </View>
     </ScrollView>
   );

@@ -1,3 +1,4 @@
+import { useUser } from "@/hooks/useUser";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { CameraView, useCameraPermissions } from "expo-camera";
@@ -16,26 +17,35 @@ import {
 
 export default function QrCode() {
   const [modalVisible, setModalVisible] = useState(true);
-  const [modalVisivelQR, setModalVisivelQR] = useState(false)
-  const [permissao, requestPermission] = useCameraPermissions()
-  const dadoQRLock = useRef(false)
-  async function handleOpenCamera(){
-      try{
-          const {granted} = await requestPermission()
-          if (!granted){
-            return Alert.alert("camera","Vc precisa habilitar a câmera!")
-          }
-          setModalVisivelQR(true)
-          dadoQRLock.current = false
-      } catch (erro) {
-          console.log(erro)
+  const [modalVisivelQR, setModalVisivelQR] = useState(false);
+  const [permissao, requestPermission] = useCameraPermissions();
+  const dadoQRLock = useRef(false);
+  async function handleOpenCamera() {
+    try {
+      const { granted } = await requestPermission();
+      if (!granted) {
+        return Alert.alert("Câmera", "Você precisa habilitar a câmera!");
       }
+      setModalVisivelQR(true);
+      dadoQRLock.current = false;
+    } catch (erro) {
+      console.log(erro);
+    }
   }
 
-  function handleQRCodeRead(data: string){
-    setModalVisivelQR(false)
-    Alert.alert("QRcode", data)
-  } 
+  const { cadastrarPresencaAluno } = useUser();
+  function handleQRCodeRead(data: string) {
+    setModalVisivelQR(false);
+
+    if (data == "RegistroPresencaAlunoFatecZonaSul") {
+      const d = new Date();
+      const dia = String(d.getDate()).padStart(2, "0");
+      const mes = String(d.getMonth() + 1).padStart(2, "0");
+      const ano = d.getFullYear();
+      const dataPresenca = `${dia}/${mes}/${ano}`;
+      cadastrarPresencaAluno(dataPresenca);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -69,21 +79,21 @@ export default function QrCode() {
         <Text style={styles.textoBotao}>Ler QR Code</Text>
       </TouchableOpacity>
 
-      <Modal visible={modalVisivelQR} style={{ flex: 1}}>
+      <Modal visible={modalVisivelQR} style={{ flex: 1 }}>
         {/* todo o qr funciona aqui */}
-        <CameraView 
-          style={{ flex: 1}} 
-          facing='back' 
-          onBarcodeScanned={ ({ data }) => { 
-            if(data && !dadoQRLock.current){
-              dadoQRLock.current = true
-              setTimeout(() => handleQRCodeRead(data), 1000)
+        <CameraView
+          style={{ flex: 1 }}
+          facing="back"
+          onBarcodeScanned={({ data }) => {
+            if (data && !dadoQRLock.current) {
+              dadoQRLock.current = true;
+              setTimeout(() => handleQRCodeRead(data), 1000);
             }
           }}
         />
-          <View>
-            <Button title='fechar' onPress={() => setModalVisivelQR(false)}/>
-          </View>
+        <View>
+          <Button title="fechar" onPress={() => setModalVisivelQR(false)} />
+        </View>
       </Modal>
     </View>
   );

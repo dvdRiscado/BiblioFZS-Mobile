@@ -33,5 +33,35 @@ export async function updateMe(token: string, dadosAtualizados: object){
 }
 
 export async function registerAluno(formDados: object){
-    await api.post('/alunos/register', formDados)
+    try{
+        await api.post('/alunos/register', formDados)
+    } catch(e:any){
+        console.log("Erro no cadastro do aluno", e.response.data)
+    }
+}
+
+export async function registerPresencaAluno(token: string, formDados: object){
+    try{
+        await api.post(
+            '/presenca', 
+            formDados,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        )
+        console.log('Presença registrada!')
+    }
+    catch(e: any){
+        console.log("Erro no cadastro da presenca do aluno", e.response.data)
+    }
+}
+
+export async function getPresencaAlunos(id: number){
+    try {
+        const presencas = await api.get(`/presenca/aluno/${id}`)
+        return presencas
+    }
+    catch(e: any){
+        console.log("Erro na coleta de presenças do aluno", e.response.data)
+    } 
 }
