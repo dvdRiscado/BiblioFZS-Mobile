@@ -9,11 +9,16 @@ import { styles } from "./style";
 
 type CardBookMediumProps = {
   book: any;
+  daysLeft?: number;
   clicked: (event: GestureResponderEvent) => void;
 };
 
-export default function CardBookMedium({ book, clicked }: any) {
-  let percent = (((Number(book.day) - 7) * -1) / 7) * 100;
+export default function CardBookMedium({
+  book,
+  daysLeft,
+  clicked,
+}: CardBookMediumProps) {
+  let percent = (((Number(daysLeft) - 7) * -1) / 7) * 100;
 
   return (
     <View style={styles.container}>
@@ -31,7 +36,7 @@ export default function CardBookMedium({ book, clicked }: any) {
             <View style={styles.progressBar} />
             <View style={[styles.progressPercent, { width: `${percent}%` }]} />
           </View>
-          <Text style={styles.label}>{book.day} dias restantes</Text>
+          <Text style={styles.label}>{daysLeft} dias restantes</Text>
         </View>
       </View>
     </View>

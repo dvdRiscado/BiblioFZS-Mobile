@@ -6,18 +6,42 @@ import {
   View,
 } from "react-native";
 
-import { Octicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
+import { useEffect, useState } from "react";
+import { sendIsFavorito, toggleFavorito } from "../funFavorites";
+import { setReservadoTrue } from "../funReservs";
 import { styles } from "./style";
 
 type CardBookHisProps = {
   book: any;
+  loan: string;
+  return: string;
+
+  favorites?: any;
+  reservs?: any;
+  setReservs?: React.Dispatch<React.SetStateAction<any>>;
+  setFavorites?: React.Dispatch<React.SetStateAction<any>>;
+
   clicked: (event: GestureResponderEvent) => void;
 };
 
-export default function CardBookHisMedium({ book, clicked }: CardBookHisProps) {
-  let percent = (((Number(book.day) - 7) * -1) / 7) * 100;
+export default function CardBookHisMedium({
+  book,
+  loan,
+  favorites,
+  reservs,
+  setReservs,
+  setFavorites,
+  return: returnDate,
+  clicked,
+}: CardBookHisProps) {
+  const [isFavorito, setIsFavorito] = useState(false);
+
+  useEffect(() => {
+    sendIsFavorito({ favorites, setIsFavorito, id: book.id });
+  }, [favorites, book.id]);
 
   return (
     <View style={styles.container}>
@@ -31,14 +55,33 @@ export default function CardBookHisMedium({ book, clicked }: CardBookHisProps) {
         </View>
         <View style={styles.progressContainer}>
           <Text style={styles.label}>Retirada:</Text>
-          <Text style={styles.info}> {book.loan}</Text>
+          <Text style={styles.info}> {loan}</Text>
           <Text style={styles.label}>Devolução:</Text>
-          <Text style={styles.info}> {book.return}</Text>
+          <Text style={styles.info}> {returnDate}</Text>
           <View style={styles.options}>
-            <TouchableOpacity style={styles.button}>
-              <Octicons name="bookmark" size={25} color="black" />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                toggleFavorito({
+                  favorites,
+                  book,
+                  setIsFavorito,
+                  setFavorites,
+                })
+              }
+            >
+              <Ionicons
+                name={isFavorito ? "bookmark" : "bookmark-outline"}
+                size={24}
+                color="black"
+              />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                setReservadoTrue({ reservs, book, setReservs });
+              }}
+            >
               <AntDesign name="plus-circle" size={24} color="black" />
             </TouchableOpacity>
           </View>

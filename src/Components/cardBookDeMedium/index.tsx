@@ -13,11 +13,14 @@ import { useEffect, useState } from "react";
 import { styles } from "./style";
 
 import { sendIsFavorito, toggleFavorito } from "../funFavorites";
+import { setReservadoTrue } from "../funReservs";
 
 type CardBookDeMediumProps = {
   book: any;
   favorites: any;
   setFavorites: React.Dispatch<React.SetStateAction<any>>;
+  reservs?: any;
+  setReservs?: React.Dispatch<React.SetStateAction<any>>;
   clicked: (event: GestureResponderEvent) => void;
 };
 
@@ -25,6 +28,8 @@ export default function CardBookDeMedium({
   book,
   favorites,
   setFavorites,
+  reservs,
+  setReservs,
   clicked,
 }: CardBookDeMediumProps) {
   const [isFavorito, setIsFavorito] = useState(false);
@@ -66,7 +71,12 @@ export default function CardBookDeMedium({
                 color="black"
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                setReservadoTrue({ reservs, book, setReservs });
+              }}
+            >
               <AntDesign name="plus-circle" size={24} color="black" />
             </TouchableOpacity>
           </View>
