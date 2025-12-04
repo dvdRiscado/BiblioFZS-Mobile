@@ -5,7 +5,7 @@ import { OpcaoLivro } from "@/src/Components/opcaoLivro";
 import { router, useFocusEffect } from "expo-router";
 
 import { useCallback, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { loadFavorites } from "@/src/Components/funFavorites";
 
@@ -107,7 +107,15 @@ export default function Catalog() {
             Monografias
           </OpcaoLivro>
         </View>
-        <View style={styles.suggestion}>{renderBooks()}</View>
+        <View style={styles.suggestion}>
+          {opcaoLivro === "livro" ? (
+            renderBooks()
+          ) : opcaoLivro === "dvds" ? (
+            <Text style={styles.caption}>Nenhum DVD encontrado.</Text>
+          ) : (
+            <Text style={styles.caption}>Nenhuma monografia encontrada.</Text>
+          )}
+        </View>
       </ScrollView>
     </View>
   );
@@ -201,5 +209,13 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  caption: {
+    fontSize: 16,
+    fontWeight: "medium",
+    width: "100%",
+    textAlign: "center",
+    color: "rgba(0,0,0,0.6)",
+    marginTop: 32,
   },
 });
