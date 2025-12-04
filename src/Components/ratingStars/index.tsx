@@ -12,14 +12,19 @@ export default function RatingStars(rating: number, size: number) {
       );
     } else if (rating >= i - 0.5) {
       stars.push(
-        <Ionicons key={i + "half"} name="star-half" size={22} color="#f19e03" />
+        <Ionicons
+          key={i + "half"}
+          name="star-half"
+          size={size}
+          color="#f19e03"
+        />
       );
     } else {
       stars.push(
         <Ionicons
           key={i + "empty"}
           name="star-outline"
-          size={22}
+          size={size}
           color="#f19e03"
         />
       );
