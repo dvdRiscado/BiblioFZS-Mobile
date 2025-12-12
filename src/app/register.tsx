@@ -18,18 +18,12 @@ import {
   validateCidade,
   validateConfirmPassword,
   validateCpf,
-  validateCurso,
   validateEmail,
   validateEstado,
-  validateFimCurso,
-  validateInicioCurso,
-  validateInstituicao,
   validateLastname,
   validateName,
   validateNumber,
   validatePassword,
-  validatePeriodo,
-  validateRaRm,
   validateRua,
   validateTelephone,
 } from "../Components/funValidate";
@@ -68,8 +62,8 @@ export default function Register() {
         nameError === "" &&
         lastnameError === "" &&
         cpfError === "" &&
-        // emailError === "" &&
-        telephoneError === ""
+        emailError === ""
+        // telephoneError === ""
       ) {
         setSection(section + 1);
       } else {
@@ -82,19 +76,20 @@ export default function Register() {
     } else if (section === 1) {
       if (
         cep !== "" &&
-        cidade !== "" &&
-        estado !== "" &&
-        bairro !== "" &&
-        rua !== "" &&
-        number !== "" &&
-        cepError === "" &&
-        cidadeError === "" &&
-        estadoError === "" &&
-        bairroError === "" &&
-        ruaError === "" &&
+        // cidade !== "" &&
+        // estado !== "" &&
+        // bairro !== "" &&
+        // rua !== "" &&
+        // number !== "" &&
+        // cepError === "" &&
+        // cidadeError === "" &&
+        // estadoError === "" &&
+        // bairroError === "" &&
+        // ruaError === "" &&
         numberError === ""
       ) {
-        setSection(section + 1);
+        // console.log("oi");
+        registrarUser();
       } else {
         validateCep(cep, setCep, setCepError);
         validateCidade(cidade, setCidade, setCidadeError);
@@ -103,49 +98,35 @@ export default function Register() {
         validateRua(rua, setRua, setRuaError);
         validateNumber(number, setNumber, setNumberError);
       }
-    } else if (section === 2) {
-      if (
-        instituicao !== "" &&
-        raRm !== "" &&
-        curso !== "" &&
-        inicioCurso !== "" &&
-        fimCurso !== "" &&
-        periodo !== "" &&
-        instituicaoError === "" &&
-        raRmError === "" &&
-        cursoError === "" &&
-        periodoError === "" &&
-        inicioCursoError === "" &&
-        fimCursoError === ""
-      ) {
-        setSection(section + 1);
-      } else {
-        validateInstituicao(instituicao, setInstituicao, setInstituicaoError);
-        validateRaRm(raRm, setRaRm, setRaRmError);
-        validateCurso(curso, setCurso, setCursoError);
-        validatePeriodo(periodo, setPeriodo, setPeriodoError);
-        validateInicioCurso(inicioCurso, setInicioCurso, setInicioCursoError);
-        validateFimCurso(fimCurso, setFimCurso, setFimCursoError);
-      }
-    } else if (section === 3) {
-      if (
-        password !== "" &&
-        confirmPassword !== "" &&
-        passwordError === "" &&
-        confirmPasswordError === ""
-      ) {
-        // router.push("/(tabs)/dashboard");
-        registrarUser();
-      } else {
-        validatePassword(password, setPassword, setPasswordError);
-        validateConfirmPassword(
-          confirmPassword,
-          password,
-          setConfirmPassword,
-          setConfirmPasswordError
-        );
-      }
     }
+    // else if (section === 2) {
+    //   if (
+    //     instituicao !== "" &&
+    //     raRm !== "" &&
+    //     curso !== "" &&
+    //     inicioCurso !== "" &&
+    //     fimCurso !== "" &&
+    //     periodo !== "" &&
+    //     instituicaoError === "" &&
+    //     raRmError === "" &&
+    //     cursoError === "" &&
+    //     periodoError === "" &&
+    //     inicioCursoError === "" &&
+    //     fimCursoError === "" &&
+    //     password !== "" &&
+    //     confirmPassword !== "" &&
+    //     passwordError === "" &&
+    //     confirmPasswordError === ""
+    //   ) {
+    //   } else {
+    //     validateInstituicao(instituicao, setInstituicao, setInstituicaoError);
+    //     validateRaRm(raRm, setRaRm, setRaRmError);
+    //     validateCurso(curso, setCurso, setCursoError);
+    //     validatePeriodo(periodo, setPeriodo, setPeriodoError);
+    //     validateInicioCurso(inicioCurso, setInicioCurso, setInicioCursoError);
+    //     validateFimCurso(fimCurso, setFimCurso, setFimCursoError);
+    //   }
+    // }
   }
 
   function backSection() {
@@ -295,7 +276,7 @@ export default function Register() {
             <View>
               <Text style={styles.titulo}>Continue</Text>
               <Text style={styles.subtitulo}>
-                Agora, adicione o seu endereço
+                Agora, adicione o seu endereço e senha
               </Text>
             </View>
             {/* Campos de Endereço */}

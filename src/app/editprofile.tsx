@@ -1,7 +1,5 @@
 import InputText from "@/src/Components/inputText";
-import InputDatePicker from "../Components/inputDatePicker";
 import { InputPassword } from "../Components/inputPassword";
-import { InputPickerSelect } from "../Components/inputPickerSelect";
 
 import { useContext, useState } from "react";
 import {
@@ -21,28 +19,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { UsuarioContext } from "@/context/UsuarioContext";
 import { useUser } from "@/hooks/useUser";
 import {
-  decideListCurso,
-  estados,
-  instituicoes,
-  periodos,
-  validateBairro,
   validateCep,
-  validateCidade,
   validateCpf,
-  validateCurso,
   validateEmail,
-  validateEstado,
-  validateFimCurso,
-  validateInicioCurso,
-  validateInstituicao,
   validateLastname,
   validateName,
   validateNumber,
   validatePassword,
-  validatePeriodo,
-  validateRaRm,
-  validateRua,
-  validateTelephone,
 } from "../Components/funValidate";
 import TxtTitle from "../Components/txtTitle";
 
@@ -108,8 +91,16 @@ export default function EditProfile() {
         nome: name,
         sobrenome: lastname,
         email: email,
+        cpf: cpf,
+        cep: 0,
+        complemento: complemento,
+        numero_residencia: number,
+        password: password,
+        is_active: true,
+        is_superuser: false,
+        is_verified: false,
       };
-      // atualizarUsuario(formDados);
+      atualizarUsuario(formDados);
       setMsg(`Aluno atualizado com sucesso!`);
     } catch (e) {
       setMsg(`Erro na atualização do aluno: ${e}`);
@@ -190,7 +181,7 @@ export default function EditProfile() {
               <Text style={styles.caption}>{emailError}</Text>
             )}
 
-            <Text style={styles.label}>Telefone</Text>
+            {/* <Text style={styles.label}>Telefone</Text>
             <InputText
               value={telephone}
               onChangeText={(value) =>
@@ -202,7 +193,7 @@ export default function EditProfile() {
             />
             {telephoneError !== "" && (
               <Text style={styles.caption}>{telephoneError}</Text>
-            )}
+            )} */}
           </View>
           <TxtTitle text="Endereço" />
           <View style={styles.inputsContainer}>
@@ -217,7 +208,7 @@ export default function EditProfile() {
             {cepError !== "" && <Text style={styles.caption}>{cepError}</Text>}
 
             <View style={styles.cidUfContainer}>
-              <View style={styles.cidContainer}>
+              {/* <View style={styles.cidContainer}>
                 <Text style={styles.label}>Cidade</Text>
                 <InputText
                   value={cidade}
@@ -245,9 +236,9 @@ export default function EditProfile() {
                 {estadoError !== "" && (
                   <Text style={styles.caption}>{estadoError}</Text>
                 )}
-              </View>
+              </View>*/}
             </View>
-            <Text style={styles.label}>Bairro</Text>
+            {/* <Text style={styles.label}>Bairro</Text>
             <InputText
               value={bairro}
               onChangeText={(value) =>
@@ -267,7 +258,7 @@ export default function EditProfile() {
               inputMode="text"
               placeholder="Digite sua rua"
             />
-            {ruaError !== "" && <Text style={styles.caption}>{ruaError}</Text>}
+            {ruaError !== "" && <Text style={styles.caption}>{ruaError}</Text>} */}
 
             <View style={styles.numCompContainer}>
               <View style={styles.numContainer}>
@@ -296,7 +287,7 @@ export default function EditProfile() {
               </View>
             </View>
           </View>
-          <TxtTitle text="Educação" />
+          {/* <TxtTitle text="Educação" />
           <View style={styles.inputsContainer}>
             <Text style={styles.label}>Instituição</Text>
             <InputPickerSelect
@@ -372,7 +363,7 @@ export default function EditProfile() {
             {fimCursoError !== "" && (
               <Text style={styles.caption}>{fimCursoError}</Text>
             )}
-          </View>
+          </View> */}
           <TxtTitle text="Senha" />
           <View style={styles.inputsContainer}>
             <Text style={styles.label}>Senha</Text>

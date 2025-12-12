@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 export function useUser(){
     const ctx = useContext(UsuarioContext)
-    
+
     function setUserContext(dados: userType){
         ctx!.setUser({
             nome: dados.nome!,
@@ -46,7 +46,8 @@ export function useUser(){
 
     async function listarPresencasAlunos(){
         const presencas = await getPresencaAlunos(ctx?.user?.id!)
-        return presencas
+        console.log(presencas)
+        return presencas!.data
     }
     
     return {loginUsuario, atualizarUsuario, registrarAluno, cadastrarPresencaAluno, listarPresencasAlunos}

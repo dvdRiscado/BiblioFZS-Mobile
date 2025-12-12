@@ -2,45 +2,78 @@ import CardBookSmall from "@/src/Components/cardBookSmall";
 import Header from "@/src/Components/header";
 import InputSearch from "@/src/Components/inputSearch";
 import { OpcaoLivro } from "@/src/Components/opcaoLivro";
-import { router } from "expo-router";
-import { useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+
+import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
+import { loadFavorites } from "@/src/Components/funFavorites";
 
-
-const bookData = [
-  {
-    id: "1",
-    title: "Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.5,
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "2",
-    title: "Não Entendendo Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 4.0,
-    uri: require("@/assets/images/image.png"),
-  },
-  {
-    id: "3",
-    title: "Desisto de Algoritmos",
-    author: "Aditya Y. Bhargava",
-    rating: 3.5,
-    uri: require("@/assets/images/image.png"),
-  },
-];
+import { books } from "@/src/Components/objStorage";
 
 export default function Catalog() {
   const [opcaoLivro, setOpcaoLivro] = useState("livro");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState(books);
+
+  let [favorites, setFavorites] = useState<any>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadFavorites({ setFavorites });
+      console.log("Favoritos carregados!");
+    }, [])
+  );
 
   function liga(val: string) {
     setOpcaoLivro(val);
   }
 
-  function goDetalhesLivro() {
-    router.navigate("/detalheslivro");
+  function handleSearch(query: string) {
+    setSearchQuery(query);
+
+    if (query.trim() === "") {
+      setFilteredBooks(books);
+    } else {
+      const filtered = books.filter((book) =>
+        book.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredBooks(filtered);
+      console.log("Livros encontrados:", filtered);
+    }
+  }
+
+  function goDetalhesLivro(id: string) {
+    router.push({
+      pathname: "/[detalheslivro]",
+      params: { detalheslivro: id },
+    });
+  }
+
+  // Função para renderizar os livros em linhas de 2
+  function renderBooks() {
+    const rows = [];
+    for (let i = 0; i < filteredBooks.length; i += 2) {
+      rows.push(
+        <View key={i} style={styles.row}>
+          <CardBookSmall
+            clicked={() => goDetalhesLivro(filteredBooks[i].id)}
+            favorites={favorites}
+            setFavorites={setFavorites}
+            book={filteredBooks[i]}
+          />
+          {filteredBooks[i + 1] && (
+            <CardBookSmall
+              clicked={() => goDetalhesLivro(filteredBooks[i + 1].id)}
+              favorites={favorites}
+              setFavorites={setFavorites}
+              book={filteredBooks[i + 1]}
+            />
+          )}
+        </View>
+      );
+    }
+    return rows;
   }
 
   return (
@@ -50,7 +83,7 @@ export default function Catalog() {
         showsVerticalScrollIndicator={false}
       >
         <Header />
-        <InputSearch />
+        <InputSearch value={searchQuery} onChangeText={handleSearch} />
         <View style={styles.containerOpcao}>
           <OpcaoLivro
             onPress={() => liga("livro")}
@@ -74,20 +107,7 @@ export default function Catalog() {
             Monografias
           </OpcaoLivro>
         </View>
-        <View style={styles.suggestion}>
-          <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
-          </View>
-          <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[0]} />
-          </View>
-          <View style={styles.row}>
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[1]} />
-            <CardBookSmall clicked={goDetalhesLivro} book={bookData[2]} />
-          </View>
-        </View>
+        <View style={styles.suggestion}>{renderBooks()}</View>
       </ScrollView>
     </View>
   );

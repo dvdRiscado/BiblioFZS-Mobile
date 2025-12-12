@@ -1,20 +1,36 @@
-import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import CardBookMedium from "@/src/Components/cardBookMedium";
 import CardBookReMedium from "@/src/Components/cardBookReMedium";
 import Header from "@/src/Components/header";
 import OptionSection from "@/src/Components/optionSection";
 
+import { loadReservs, sendQntReservados } from "@/src/Components/funReservs";
+import { books } from "@/src/Components/objStorage";
+
 export default function Historic() {
   const [section, setSection] = useState("reserva");
 
+  const [reservs, setReservs] = useState<any>(null);
+  const [qntReservados, setQntReservados] = useState(0);
+
   const selected = useLocalSearchParams();
 
-  function goDetalhesLivro() {
-    router.navigate("/detalheslivro");
+  function goDetalhesLivro(id: string) {
+    router.push({
+      pathname: "/[detalheslivro]",
+      params: { detalheslivro: id },
+    });
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      loadReservs({ setReservs });
+      sendQntReservados().then(setQntReservados);
+      console.log("Reservas carregadas!");
+    }, [])
+  );
 
   useEffect(() => {
     if (!selected?.reserve_loan) return;
@@ -23,29 +39,9 @@ export default function Historic() {
     else if (val === "reserva") setSection("reserva");
   }, [selected?.reserve_loan]);
 
-  const bookData = [
-    {
-      id: "1",
-      title: "Entendendo Algoritmos",
-      author: "Aditya Y. Bhargava",
-      day: "1",
-      uri: require("@/assets/images/image.png"),
-    },
-    {
-      id: "2",
-      title: "Não Entendendo Algoritmos",
-      author: "Aditya Y. Bhargava",
-      day: "4",
-      uri: require("@/assets/images/image.png"),
-    },
-    {
-      id: "3",
-      title: "Desisto de Algoritmos",
-      author: "Aditya Y. Bhargava",
-      day: "1",
-      uri: require("@/assets/images/image.png"),
-    },
-  ];
+  useEffect(() => {
+    sendQntReservados().then(setQntReservados);
+  }, [reservs]);
 
   function changeSection(val: string) {
     setSection(val);
@@ -67,7 +63,7 @@ export default function Historic() {
             }}
             valOn={section}
             valor={"reserva"}
-            qtd={1}
+            qtd={qntReservados}
           >
             Reservados
           </OptionSection>
@@ -78,7 +74,7 @@ export default function Historic() {
             }}
             valOn={section}
             valor={"emprestimo"}
-            qtd={2}
+            qtd={0}
           >
             Emprestados
           </OptionSection>
@@ -86,12 +82,33 @@ export default function Historic() {
 
         {section === "emprestimo" ? (
           <View style={styles.booksContainer}>
-            <CardBookMedium book={bookData[0]} clicked={goDetalhesLivro} />
-            <CardBookMedium book={bookData[1]} clicked={goDetalhesLivro} />
+            <Text style={styles.text}>Nenhum livro emprestado</Text>
           </View>
         ) : (
           <View style={styles.booksContainer}>
-            <CardBookReMedium book={bookData[2]} clicked={goDetalhesLivro} />
+            {qntReservados === 0 ? (
+              <Text style={styles.text}>Nenhum livro reservado</Text>
+            ) : (
+              reservs?.map((resv: any) => {
+                if (resv.reservado) {
+                  const bookInfo = books.find(
+                    (b) => b.id.toString() === resv.id.toString()
+                  );
+                  if (bookInfo) {
+                    return (
+                      <CardBookReMedium
+                        key={bookInfo.id}
+                        book={bookInfo}
+                        reservs={reservs}
+                        setReservs={setReservs}
+                        clicked={() => goDetalhesLivro(bookInfo.id)}
+                        daysLeft={resv.dias}
+                      />
+                    );
+                  }
+                }
+              })
+            )}
           </View>
         )}
       </ScrollView>
@@ -126,5 +143,12 @@ const styles = StyleSheet.create({
   },
   booksContainer: {
     paddingVertical: 5,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "medium",
+    width: "100%",
+    textAlign: "center",
+    color: "rgba(0,0,0,0.6)",
   },
 });

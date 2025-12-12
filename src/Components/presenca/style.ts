@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"space-between",
         paddingHorizontal: 16,
+        marginBottom:16,
         gap: 32,
     },
     presencaInfo:{
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
         fontWeight:"bold"
     },
     presencaTextoData:{
-        color:"#d9d9d9",
+        color:"#ffffffff",
         fontSize:12
     },
 })

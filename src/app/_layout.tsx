@@ -35,7 +35,7 @@ export default function Layout() {
         />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
-          name="detalheslivro"
+          name="[detalheslivro]"
           options={{
             title: "Detalhes do Livro",
             headerTitleAlign: "center",

@@ -11,9 +11,10 @@ export default function HistoricoQrCode() {
     useCallback(() => {
       async function carregarPresencas() {
         const presencas = await listarPresencasAlunos();
-        setListaPresenca(presencas?.data);
-        console.log(presencas!.data.id);
-        console.log(listaPresenca);
+        // setListaPresenca(presencas?.data);
+        // console.log(presencas!.data.id);
+        // console.log(listaPresenca);
+        setListaPresenca(presencas);
       }
       carregarPresencas();
     }, [])
@@ -25,7 +26,7 @@ export default function HistoricoQrCode() {
         <Text style={styles.headline}>Histórico</Text>
         <View style={styles.presencaContainer}></View>
         {listaPresenca.map((i) => (
-          <Presenca key={i.id} dataPresenca={i.dataPresenca}></Presenca>
+          <Presenca key={i.id} dataPresenca={i.datetime_presenca}></Presenca>
         ))}
       </View>
     </ScrollView>

@@ -57,8 +57,10 @@ export async function registerPresencaAluno(token: string, formDados: object){
 }
 
 export async function getPresencaAlunos(id: number){
+    console.log(id)
     try {
         const presencas = await api.get(`/presenca/aluno/${id}`)
+        console.log('as presenças', presencas)
         return presencas
     }
     catch(e: any){
