@@ -105,3 +105,6 @@ Projeto desenvolvido pelos alunos da Fatec Zona Sul:
 * **David Vasconcelos Torquato**
 * **Allan Bellusci Medeiros**
 * **Orientadora:** Profª. Josenyr Santos Rosa
+
+---
+*Este projeto foi apresentado à FATEC Zona Sul - Dom Paulo Evaristo Arns, São Paulo - SP, em Dezembro de 2025*
