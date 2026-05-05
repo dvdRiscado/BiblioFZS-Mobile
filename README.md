@@ -14,6 +14,13 @@ A solução consiste em um sistema informatizado capaz de centralizar todas as i
 * O ciclo de empréstimos, renovações e devoluções.
 * A autonomia do usuário, que passa a contar com um aplicativo móvel para consultas e reservas.
 
+## 📱 Demonstração da Aplicação Mobile
+![Vídeo da aplicação mobile da BiblioFZS](https://github.com/dvdRiscado/BiblioFZS-Mobile/blob/feat/readme-assets/bibliofzs-mobile-gif-compressed.gif)
+
+
+## 💻 Demonstração da Aplicação Web
+![Vídeo da aplicação web da BiblioFZS](https://github.com/dvdRiscado/BiblioFZS-Mobile/blob/feat/readme-assets/bibliofzs-web-gif-compressed.gif)
+
 ## 🛠️ Tecnologias
 O projeto foi desenvolvido utilizando tecnologias modernas para garantir escalabilidade e robustez:
 * **Mobile:** React Native, Expo e TypeScript.
